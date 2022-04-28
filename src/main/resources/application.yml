@@ -1,0 +1,7 @@
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/automated_parking_lot
+    username: root
+    password: password
+  jackson:
+    property-naming-strategy: SNAKE_CASE
