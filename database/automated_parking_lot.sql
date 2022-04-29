@@ -17,6 +17,9 @@ CREATE TABLE parking_floor (
     FOREIGN KEY (parking_lot) REFERENCES parking_lot(id)
 );
 
+ALTER TABLE parking_floor
+ADD COLUMN name VARCHAR(15) NOT NULL AFTER id;
+
 CREATE TABLE slot (
     id int NOT NULL AUTO_INCREMENT,
     parking_floor int,
@@ -25,6 +28,9 @@ CREATE TABLE slot (
     PRIMARY KEY (id),
     FOREIGN KEY (parking_floor) REFERENCES parking_floor(id)
 );
+
+ALTER TABLE slot
+ADD COLUMN name VARCHAR(15) NOT NULL AFTER id;
 
 CREATE TABLE vehicle (
     id int NOT NULL AUTO_INCREMENT,

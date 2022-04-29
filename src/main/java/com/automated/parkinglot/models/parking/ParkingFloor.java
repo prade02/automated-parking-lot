@@ -2,6 +2,7 @@ package com.automated.parkinglot.models.parking;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 
@@ -14,8 +15,8 @@ public class ParkingFloor {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int parkingFloorId;
 
-    @ManyToOne
-    @JoinColumn(referencedColumnName = "id", nullable = false)
-    private ParkingLot parkingLot;
+    @Setter
+    private String name;
+    private int parkingLot;
     private int totalSlots;
 }

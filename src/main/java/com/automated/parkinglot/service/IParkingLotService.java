@@ -1,7 +1,6 @@
 package com.automated.parkinglot.service;
 
 import com.automated.parkinglot.models.parking.ParkingLot;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 

@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 
 @Entity
-@Getter @Setter @NoArgsConstructor
+@Getter @NoArgsConstructor
 public class Slot {
 
     @Id
@@ -17,9 +17,9 @@ public class Slot {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int slotId;
 
-    @ManyToOne
-    @JoinColumn(referencedColumnName = "id", nullable = false)
-    private ParkingFloor parkingFloor;
+    @Setter
+    private String name;
+    private int parkingFloor;
     private GenericType slotType;
 
     @Setter

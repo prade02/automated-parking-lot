@@ -1,7 +1,6 @@
 package com.automated.parkinglot.models.vehicle;
 
 import com.automated.parkinglot.models.enums.GenericType;
-import com.automated.parkinglot.models.parking.Slot;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.NoArgsConstructor;
@@ -22,9 +21,7 @@ public class Vehicle {
     private String vehicleColour;
     private GenericType vehicleType;
 
-    @ManyToOne
-    @JoinColumn(name = "slot", referencedColumnName = "id", nullable = true)
-    private Slot slotId;
+    private int slotId;
 
     @Setter
     private Date inTime;
