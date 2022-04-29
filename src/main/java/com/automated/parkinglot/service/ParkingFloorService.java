@@ -35,11 +35,13 @@ public class ParkingFloorService implements IParkingFloorService {
 
     @Override
     public ParkingFloor addNewParkingFloor(final ParkingFloor parkingFloor) {
-        var parkingLotName = parkingLotRepository.findById(parkingFloor.getParkingLot());
-        if (parkingLotName.isEmpty())
+        var optionalParkingLotName = parkingLotRepository.findById(parkingFloor.getParkingLot());
+        if (optionalParkingLotName.isEmpty())
             throw new InvalidRequestException("Invalid Parking Lot");
-
-        parkingFloor.setName(String.format("%s_%s", parkingLotName.get().getName(), parkingFloor.getName()));
+        var parkingLot = optionalParkingLotName.get();
+        if (parkingLot.getTotalFloors() <= getAllParkingFloorsByParkingLot(parkingLot.getParkingLotId()).size())
+            throw new InvalidRequestException("No new floors can be added to the parking lot");
+        parkingFloor.setName(String.format("%s_%s", parkingLot.getName(), parkingFloor.getName()));
         return parkingFloorRepository.save(parkingFloor);
     }
 

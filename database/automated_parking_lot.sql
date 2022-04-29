@@ -32,6 +32,8 @@ CREATE TABLE slot (
 ALTER TABLE slot
 ADD COLUMN name VARCHAR(15) NOT NULL AFTER id;
 
+ALTER TABLE slot MODIFY COLUMN name varchar(50);
+
 CREATE TABLE vehicle (
     id int NOT NULL AUTO_INCREMENT,
     registration_number varchar(20) NOT NULL,
