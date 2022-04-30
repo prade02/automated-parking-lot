@@ -19,6 +19,7 @@ public class Vehicle {
 
     private String registrationNumber;
     private String vehicleColour;
+    @Enumerated(EnumType.STRING)
     private GenericType vehicleType;
 
     private int slotId;

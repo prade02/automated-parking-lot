@@ -20,8 +20,10 @@ public class Slot {
     @Setter
     private String name;
     private int parkingFloor;
+    @Enumerated(EnumType.STRING)
     private GenericType slotType;
 
     @Setter
+    @Enumerated(EnumType.STRING)
     private SlotStatus slotStatus;
 }
