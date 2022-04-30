@@ -2,6 +2,7 @@ package com.automated.parkinglot.service;
 
 import com.automated.parkinglot.exception.InvalidRequestException;
 import com.automated.parkinglot.models.parking.ParkingFloor;
+import com.automated.parkinglot.models.parking.ParkingLot;
 import com.automated.parkinglot.repository.ParkingFloorRepository;
 import com.automated.parkinglot.repository.ParkingLotRepository;
 import lombok.AllArgsConstructor;
@@ -39,7 +40,7 @@ public class ParkingFloorService implements IParkingFloorService {
         if (optionalParkingLotName.isEmpty())
             throw new InvalidRequestException("Invalid Parking Lot");
         var parkingLot = optionalParkingLotName.get();
-        if (parkingLot.getTotalFloors() <= getAllParkingFloorsByParkingLot(parkingLot.getParkingLotId()).size())
+        if (!canAddNewFloor(parkingLot))
             throw new InvalidRequestException("No new floors can be added to the parking lot");
         parkingFloor.setName(String.format("%s_%s", parkingLot.getName(), parkingFloor.getName()));
         return parkingFloorRepository.save(parkingFloor);
@@ -60,5 +61,9 @@ public class ParkingFloorService implements IParkingFloorService {
         if (parkingFloorRepository.findById(id).isEmpty())
             throw new InvalidRequestException("Given Id is not found");
         parkingFloorRepository.deleteById(id);
+    }
+
+    private boolean canAddNewFloor(ParkingLot parkingLot) {
+        return parkingLot.getTotalFloors() > getAllParkingFloorsByParkingLot(parkingLot.getParkingLotId()).size();
     }
 }

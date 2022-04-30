@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface ISlotService {
 
-    List<Slot> findAllSlotsForFloor(int parkingFloorId);
+    List<Slot> getAllSlotsForFloor(int parkingFloorId);
     Slot getSlotById(int slotId);
     Slot getSlotByName(String name);
     Slot addNewSlot(Slot slot);

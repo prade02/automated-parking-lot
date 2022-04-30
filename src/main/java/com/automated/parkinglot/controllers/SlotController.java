@@ -16,7 +16,7 @@ public class SlotController {
 
     @GetMapping("all/{parkingFloorId}")
     public List<Slot> getAllSlots(@PathVariable int parkingFloorId) {
-        return slotService.findAllSlotsForFloor(parkingFloorId);
+        return slotService.getAllSlotsForFloor(parkingFloorId);
     }
 
     @GetMapping("{id}")
