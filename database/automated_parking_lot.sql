@@ -45,3 +45,15 @@ CREATE TABLE vehicle (
     PRIMARY KEY (id),
     FOREIGN KEY (slot) REFERENCES slot(id)
 );
+
+DELIMITER $$
+CREATE PROCEDURE `select_available_slot` (IN lot_id int, IN type VARCHAR(20), OUT slot_id INT)
+BEGIN
+	SELECT s.id INTO slot_id FROM slot s INNER JOIN parking_floor f 
+	ON s.parking_floor = f.id 
+	WHERE f.parking_lot = lot_id 
+	AND s.slot_status = 'VACANT'
+	AND s.slot_type = type
+	ORDER BY s.name asc
+	LIMIT 1;
+END $$

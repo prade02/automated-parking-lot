@@ -1,15 +1,14 @@
 package com.automated.parkinglot.models.vehicle;
 
 import com.automated.parkinglot.models.enums.GenericType;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-@Getter @NoArgsConstructor
+@Getter @NoArgsConstructor @AllArgsConstructor
+@Builder
 public class Vehicle {
 
     @Id
@@ -18,10 +17,11 @@ public class Vehicle {
     private int entryId;
 
     private String registrationNumber;
-    private String vehicleColour;
+    private String vehicleColor;
     @Enumerated(EnumType.STRING)
     private GenericType vehicleType;
 
+    @Column(name = "slot")
     private int slotId;
 
     @Setter
