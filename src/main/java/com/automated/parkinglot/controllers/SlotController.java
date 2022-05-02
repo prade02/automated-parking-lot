@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @AllArgsConstructor
@@ -37,5 +38,20 @@ public class SlotController {
     @DeleteMapping("{id}")
     public void deleteSlot(@PathVariable int id) {
         slotService.deleteSlotById(id);
+    }
+
+    @GetMapping("vacant/count/{parkingLotId}")
+    public Map<Integer, Map<String, Integer>> getCountOfVacantSlotsPerFloorForType(@PathVariable int parkingLotId) {
+        return slotService.getCountOfVacantSlotsPerFloorPerType(parkingLotId);
+    }
+
+    @GetMapping("vacant/all/{parkingLotId}")
+    public Map<Integer, Map<String, List<Slot>>> getAllVacantSlotsPerFloorForType(@PathVariable int parkingLotId) {
+        return slotService.getAllVacantSlotsPerFloorPerType(parkingLotId);
+    }
+
+    @GetMapping("occupied/all/{parkingLotId}")
+    public Map<Integer, Map<String, List<Slot>>> getAllOccupiedSlotsPerFloorForType(@PathVariable int parkingLotId) {
+        return slotService.getAllOccupiedSlotsPerFloorPerType(parkingLotId);
     }
 }

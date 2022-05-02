@@ -1,6 +1,7 @@
 package com.automated.parkinglot.service;
 
 import com.automated.parkinglot.exception.InvalidRequestException;
+import com.automated.parkinglot.models.enums.SlotStatus;
 import com.automated.parkinglot.models.parking.ParkingFloor;
 import com.automated.parkinglot.models.parking.Slot;
 import com.automated.parkinglot.repository.ParkingFloorRepository;
@@ -8,8 +9,7 @@ import com.automated.parkinglot.repository.SlotRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Service
 @AllArgsConstructor
@@ -83,5 +83,50 @@ public class SlotService implements ISlotService {
 
     private boolean canAddNewSlots(ParkingFloor parkingFloor) {
         return parkingFloor.getTotalSlots() > getAllSlotsForFloor(parkingFloor.getParkingFloorId()).size();
+    }
+
+    @Override
+    public Map<Integer, Map<String, Integer>> getCountOfVacantSlotsPerFloorPerType(int parkingLotId) {
+        return getCountOfSlotsPerFloorPerType(parkingLotId, SlotStatus.VACANT);
+    }
+
+    @Override
+    public Map<Integer, Map<String, List<Slot>>> getAllVacantSlotsPerFloorPerType(int parkingLotId) {
+        return getAllSlotsPerFloorForType(parkingLotId, SlotStatus.VACANT);
+    }
+
+    @Override
+    public Map<Integer, Map<String, List<Slot>>> getAllOccupiedSlotsPerFloorPerType(int parkingLotId) {
+        return getAllSlotsPerFloorForType(parkingLotId, SlotStatus.OCCUPIED);
+    }
+
+    private Map<Integer, Map<String, Integer>> getCountOfSlotsPerFloorPerType(int parkingLotId, SlotStatus slotStatus) {
+        final var vacantSlots = slotRepository.getAllSlotsForStatus(slotStatus.name(), parkingLotId);
+        final var vacantSlotsPerFloorForType = new TreeMap<Integer, Map<String, Integer>>();
+        for (Slot vacantSlot : vacantSlots) {
+            if (!vacantSlotsPerFloorForType.containsKey(vacantSlot.getParkingFloor()))
+                vacantSlotsPerFloorForType.put(vacantSlot.getParkingFloor(), new HashMap<>());
+            var floor = vacantSlotsPerFloorForType.get(vacantSlot.getParkingFloor());
+            String sSlotType = vacantSlot.getSlotType().name();
+            if (!floor.containsKey(sSlotType))
+                floor.put(sSlotType, 0);
+            floor.put(sSlotType, floor.get(sSlotType) + 1);
+        }
+        return vacantSlotsPerFloorForType;
+    }
+
+    private Map<Integer, Map<String, List<Slot>>> getAllSlotsPerFloorForType(int parkingLotId, SlotStatus slotStatus) {
+        final var vacantSlots = slotRepository.getAllSlotsForStatus(slotStatus.name(), parkingLotId);
+        final var vacantSlotsPerFloorForType = new TreeMap<Integer, Map<String, List<Slot>>>();
+        for (Slot vacantSlot : vacantSlots) {
+            if (!vacantSlotsPerFloorForType.containsKey(vacantSlot.getParkingFloor()))
+                vacantSlotsPerFloorForType.put(vacantSlot.getParkingFloor(), new HashMap<>());
+            var floor = vacantSlotsPerFloorForType.get(vacantSlot.getParkingFloor());
+            String sSlotType = vacantSlot.getSlotType().name();
+            if (!floor.containsKey(sSlotType))
+                floor.put(sSlotType, new ArrayList<>());
+            floor.get(sSlotType).add(vacantSlot);
+        }
+        return vacantSlotsPerFloorForType;
     }
 }
