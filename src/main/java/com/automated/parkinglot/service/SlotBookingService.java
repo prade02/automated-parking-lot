@@ -74,7 +74,7 @@ public class SlotBookingService implements ISlotBookingService {
 
         // get In and out time, and calculate the hours clocked
         final Date outTime = Date.from(Instant.now());
-        final long hoursClocked = getHoursBetweenInAndOut(vehicle.getInTime(), outTime);
+        final int hoursClocked = getHoursBetweenInAndOut(vehicle.getInTime(), outTime);
 
         // based on the hours, calculate amount in rupees
         final double amountInRupee = calculateAmountForHours(hoursClocked, vehicle.getVehicleType());
@@ -94,18 +94,13 @@ public class SlotBookingService implements ISlotBookingService {
         slotRepository.save(slot);
     }
 
-    private long getHoursBetweenInAndOut(final Date inTime, final Date outTime) {
+    private int getHoursBetweenInAndOut(final Date inTime, final Date outTime) {
         final long duration = outTime.getTime() - inTime.getTime();
         final long timeInMinutes = TimeUnit.MILLISECONDS.toMinutes(duration);
-        long totalHours = timeInMinutes / 60;
-        if (totalHours > 0) {
-            long remainingMinutesAfterHoursConversion = timeInMinutes % 60;
-            totalHours = remainingMinutesAfterHoursConversion > 0 ? totalHours + 1 : totalHours;
-        }
-        return totalHours == 0 ? 1 : totalHours;
+        return (int) Math.ceil((float) timeInMinutes / 60);
     }
 
-    private double calculateAmountForHours(final long hours, final GenericType vehicleType) {
+    private double calculateAmountForHours(final int hours, final GenericType vehicleType) {
         return hours * GenericType.getVehicleFeePerHour(vehicleType);
     }
 }
