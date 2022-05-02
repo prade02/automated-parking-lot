@@ -6,9 +6,8 @@ import lombok.*;
 import javax.persistence.*;
 import java.util.Date;
 
-@Entity
-@Getter @NoArgsConstructor @AllArgsConstructor
-@Builder
+@Entity @Table(name = "vehicle")
+@Builder @Getter @NoArgsConstructor @AllArgsConstructor
 public class Vehicle {
 
     @Id
@@ -17,7 +16,6 @@ public class Vehicle {
     private int entryId;
 
     private String registrationNumber;
-    private String vehicleColor;
     @Enumerated(EnumType.STRING)
     private GenericType vehicleType;
 
@@ -28,4 +26,7 @@ public class Vehicle {
     private Date inTime;
     @Setter
     private Date outTime;
+    @Setter
+    @Column(name = "fee")
+    private double amountInRupees;
 }

@@ -15,9 +15,19 @@ public class SlotBookingController {
 
     private final ISlotBookingService slotBookingService;
 
-    @GetMapping("{parkingLot}/{vehicleRegistration}/{slotType}")
+    @GetMapping("book/{parkingLot}/{vehicleRegistration}/{slotType}")
     public String bookSlot(@PathVariable int parkingLot, @PathVariable String vehicleRegistration,
                            @PathVariable GenericType slotType) {
         return slotBookingService.bookSlot(parkingLot, vehicleRegistration, slotType);
+    }
+
+    @GetMapping("release/{registrationNumber}")
+    public double releaseSlot(@PathVariable String registrationNumber) {
+        return slotBookingService.releaseSlotAndGetFeeInRupees(registrationNumber);
+    }
+
+    @GetMapping("amount/{registrationNumber}")
+    public double getAmountTillNow(@PathVariable String registrationNumber) {
+        return slotBookingService.getParkingFee(registrationNumber);
     }
 }

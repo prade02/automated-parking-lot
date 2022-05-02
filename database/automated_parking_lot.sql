@@ -46,6 +46,10 @@ CREATE TABLE vehicle (
     FOREIGN KEY (slot) REFERENCES slot(id)
 );
 
+ALTER TABLE vehicle ADD COLUMN fee DECIMAL;
+
+ALTER TABLE vehicle DROP COLUMN vehicle_color;
+
 DELIMITER $$
 CREATE PROCEDURE `select_available_slot` (IN lot_id int, IN type VARCHAR(20), OUT slot_id INT)
 BEGIN
