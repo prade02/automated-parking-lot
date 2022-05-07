@@ -4,6 +4,4 @@ import com.automated.parkinglot.models.enums.GenericType;
 
 public interface ISlotBookingService {
     String bookSlot(int parkingLotId, String vehicleRegistration, GenericType slotType);
-    double releaseSlotAndGetFeeInRupees(String vehicleRegistration);
-    double getParkingFee(String vehicleRegistration);
 }
