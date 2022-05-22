@@ -20,14 +20,4 @@ public class SlotBookingController {
                            @PathVariable GenericType slotType) {
         return slotBookingService.bookSlot(parkingLot, vehicleRegistration, slotType);
     }
-
-    @GetMapping("release/{registrationNumber}")
-    public double releaseSlot(@PathVariable String registrationNumber) {
-        return slotBookingService.releaseSlotAndGetFeeInRupees(registrationNumber);
-    }
-
-    @GetMapping("amount/{registrationNumber}")
-    public double getAmountTillNow(@PathVariable String registrationNumber) {
-        return slotBookingService.getParkingFee(registrationNumber);
-    }
 }
