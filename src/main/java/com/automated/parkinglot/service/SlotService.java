@@ -101,7 +101,7 @@ public class SlotService implements ISlotService {
     }
 
     private Map<Integer, Map<String, Integer>> getCountOfSlotsPerFloorPerType(int parkingLotId, SlotStatus slotStatus) {
-        final var vacantSlots = slotRepository.getAllSlotsForStatus(slotStatus.name(), parkingLotId);
+        final var vacantSlots = slotRepository.getAllSlotsForStatus(slotStatus, parkingLotId);
         final var vacantSlotsPerFloorForType = new TreeMap<Integer, Map<String, Integer>>();
         for (Slot vacantSlot : vacantSlots) {
             if (!vacantSlotsPerFloorForType.containsKey(vacantSlot.getParkingFloor()))
@@ -116,7 +116,7 @@ public class SlotService implements ISlotService {
     }
 
     private Map<Integer, Map<String, List<Slot>>> getAllSlotsPerFloorForType(int parkingLotId, SlotStatus slotStatus) {
-        final var vacantSlots = slotRepository.getAllSlotsForStatus(slotStatus.name(), parkingLotId);
+        final var vacantSlots = slotRepository.getAllSlotsForStatus(slotStatus, parkingLotId);
         final var vacantSlotsPerFloorForType = new TreeMap<Integer, Map<String, List<Slot>>>();
         for (Slot vacantSlot : vacantSlots) {
             if (!vacantSlotsPerFloorForType.containsKey(vacantSlot.getParkingFloor()))

@@ -1,5 +1,8 @@
 package com.automated.parkinglot.repository.providers;
 
+import com.automated.parkinglot.models.enums.GenericType;
+import com.automated.parkinglot.models.enums.SlotStatus;
+import com.automated.parkinglot.models.parking.QParkingFloor;
 import com.automated.parkinglot.models.parking.QSlot;
 import com.automated.parkinglot.models.parking.Slot;
 import com.automated.parkinglot.repository.SlotRepository;
@@ -14,6 +17,7 @@ import javax.persistence.EntityManager;
 public class JpaSlotRepository extends SimpleJpaRepository<Slot, Integer> implements SlotRepository {
 
     private final QSlot slot = QSlot.slot;
+    private final QParkingFloor parkingFloor = QParkingFloor.parkingFloor;
     private final JPAQueryFactory jpaQueryFactory;
 
     public JpaSlotRepository(EntityManager entityManager) {
@@ -32,14 +36,26 @@ public class JpaSlotRepository extends SimpleJpaRepository<Slot, Integer> implem
     }
 
     @Override
-    public Integer getAvailableSlot(int parkingLotId, String slotType) {
-        // TODO: implement
-        return null;
+    public Slot getAvailableSlot(int parkingLotId, GenericType slotType) {
+        return jpaQueryFactory
+                .selectFrom(slot)
+                .join(parkingFloor)
+                .on(slot.parkingFloor.eq(parkingFloor.parkingFloorId))
+                .where(parkingFloor.parkingLot.eq(parkingLotId)
+                               .and(slot.slotStatus.eq(SlotStatus.VACANT))
+                               .and(slot.slotType.eq(slotType)))
+                .orderBy(slot.name.asc())
+                .fetchFirst();
     }
 
     @Override
-    public Iterable<Slot> getAllSlotsForStatus(String status, int parkingLotId) {
-        // TODO: implement
-        return null;
+    public Iterable<Slot> getAllSlotsForStatus(SlotStatus status, int parkingLotId) {
+        return jpaQueryFactory
+                .selectFrom(slot)
+                .join(parkingFloor)
+                .on(slot.parkingFloor.eq(parkingFloor.parkingFloorId))
+                .where(parkingFloor.parkingLot.eq(parkingLotId).and(slot.slotStatus.eq(status)))
+                .orderBy(slot.name.asc())
+                .fetch();
     }
 }

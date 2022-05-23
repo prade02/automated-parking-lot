@@ -15,12 +15,9 @@ public class LowestOnAllFromDb implements SlotBookingStrategy {
 
     @Override
     public Slot bookSlot(int parkingLotId, GenericType slotType) {
-        var slotId = slotRepository.getAvailableSlot(parkingLotId, slotType.name());
-        if (slotId == null)
+        var slot = slotRepository.getAvailableSlot(parkingLotId, slotType);
+        if (slot == null)
             throw new InvalidRequestException("No slots available");
-        var optionalSlot = slotRepository.findById(slotId);
-        if (optionalSlot.isEmpty())
-            throw new InvalidRequestException("Unable to allocate slot");
-        return optionalSlot.get();
+        return slot;
     }
 }
