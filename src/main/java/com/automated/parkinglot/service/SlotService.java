@@ -91,12 +91,12 @@ public class SlotService implements ISlotService {
     }
 
     @Override
-    public Map<Integer, Map<String, List<Slot>>> getAllVacantSlotsPerFloorPerType(int parkingLotId) {
+    public Iterable<Slot> getAllVacantSlotsPerFloorPerType(int parkingLotId) {
         return getAllSlotsPerFloorForType(parkingLotId, SlotStatus.VACANT);
     }
 
     @Override
-    public Map<Integer, Map<String, List<Slot>>> getAllOccupiedSlotsPerFloorPerType(int parkingLotId) {
+    public Iterable<Slot> getAllOccupiedSlotsPerFloorPerType(int parkingLotId) {
         return getAllSlotsPerFloorForType(parkingLotId, SlotStatus.OCCUPIED);
     }
 
@@ -115,18 +115,7 @@ public class SlotService implements ISlotService {
         return vacantSlotsPerFloorForType;
     }
 
-    private Map<Integer, Map<String, List<Slot>>> getAllSlotsPerFloorForType(int parkingLotId, SlotStatus slotStatus) {
-        final var vacantSlots = slotRepository.getAllSlotsForStatus(slotStatus, parkingLotId);
-        final var vacantSlotsPerFloorForType = new TreeMap<Integer, Map<String, List<Slot>>>();
-        for (Slot vacantSlot : vacantSlots) {
-            if (!vacantSlotsPerFloorForType.containsKey(vacantSlot.getParkingFloor()))
-                vacantSlotsPerFloorForType.put(vacantSlot.getParkingFloor(), new HashMap<>());
-            var floor = vacantSlotsPerFloorForType.get(vacantSlot.getParkingFloor());
-            String sSlotType = vacantSlot.getSlotType().name();
-            if (!floor.containsKey(sSlotType))
-                floor.put(sSlotType, new ArrayList<>());
-            floor.get(sSlotType).add(vacantSlot);
-        }
-        return vacantSlotsPerFloorForType;
+    private Iterable<Slot> getAllSlotsPerFloorForType(int parkingLotId, SlotStatus slotStatus) {
+        return slotRepository.getAllSlotsForStatus(slotStatus, parkingLotId);
     }
 }

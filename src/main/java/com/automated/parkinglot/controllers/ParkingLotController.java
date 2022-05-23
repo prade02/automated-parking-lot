@@ -31,16 +31,18 @@ public class ParkingLotController {
 
     @PostMapping
     public ParkingLotDTO addParkingLot(@RequestBody ParkingLotDTO parkingLotDTO) {
-        return modelMapper
-                .map(parkingLotService.addNewParkingLot(modelMapper.map(parkingLotDTO, ParkingLot.class)),
-                     ParkingLotDTO.class);
+        return modelMapper.map(
+                parkingLotService.addNewParkingLot(modelMapper.map(parkingLotDTO, ParkingLot.class)),
+                ParkingLotDTO.class
+        );
     }
 
     @PutMapping("{id}")
     public ParkingLotDTO updateParkingLot(@PathVariable int id, @RequestBody ParkingLotDTO parkingLotDTO) {
-        return modelMapper
-                .map(parkingLotService.updateParkingLot(id, modelMapper.map(parkingLotDTO, ParkingLot.class)),
-                     ParkingLotDTO.class);
+        return modelMapper.map(
+                parkingLotService.updateParkingLot(id, modelMapper.map(parkingLotDTO, ParkingLot.class)),
+                ParkingLotDTO.class
+        );
     }
 
     @DeleteMapping("{id}")

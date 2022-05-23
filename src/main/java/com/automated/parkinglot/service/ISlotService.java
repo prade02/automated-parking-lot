@@ -15,6 +15,6 @@ public interface ISlotService {
     void deleteSlotById(int id);
     void deleteSlotByName(String name);
     Map<Integer, Map<String, Integer>> getCountOfVacantSlotsPerFloorPerType(int parkingLotId);
-    Map<Integer, Map<String, List<Slot>>> getAllVacantSlotsPerFloorPerType(int parkingLotId);
-    Map<Integer, Map<String, List<Slot>>> getAllOccupiedSlotsPerFloorPerType(int parkingLotId);
+    Iterable<Slot> getAllVacantSlotsPerFloorPerType(int parkingLotId);
+    Iterable<Slot> getAllOccupiedSlotsPerFloorPerType(int parkingLotId);
 }
