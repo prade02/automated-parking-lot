@@ -42,7 +42,6 @@ public class SlotBookingService implements ISlotBookingService {
 
     @Transactional
     private void persistData(Vehicle vehicle, Slot slot){
-        // TODO: Should transactions be in service layer
         vehicleRepository.save(vehicle);
         slotRepository.save(slot);
     }
