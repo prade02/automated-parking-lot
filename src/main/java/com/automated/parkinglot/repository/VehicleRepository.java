@@ -8,5 +8,5 @@ import java.util.Optional;
 
 @NoRepositoryBean
 public interface VehicleRepository extends JpaRepository<Vehicle, Integer> {
-    Optional<Vehicle> findLatestVehicleEntry(String registration);
+  Optional<Vehicle> findLatestVehicleEntry(String registration);
 }

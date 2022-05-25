@@ -10,19 +10,22 @@ import org.springframework.stereotype.Repository;
 import javax.persistence.EntityManager;
 
 @Repository
-public class JpaParkingFloorRepository extends SimpleJpaRepository<ParkingFloor, Integer> implements ParkingFloorRepository {
+public class JpaParkingFloorRepository extends SimpleJpaRepository<ParkingFloor, Integer>
+    implements ParkingFloorRepository {
 
-    private final QParkingFloor parkingFloor = QParkingFloor.parkingFloor;
-    private final JPAQueryFactory jpaQueryFactory;
+  private final QParkingFloor parkingFloor = QParkingFloor.parkingFloor;
+  private final JPAQueryFactory jpaQueryFactory;
 
-    public JpaParkingFloorRepository(EntityManager entityManager) {
-        super(ParkingFloor.class, entityManager);
-        this.jpaQueryFactory = new JPAQueryFactory(entityManager);
-    }
+  public JpaParkingFloorRepository(EntityManager entityManager) {
+    super(ParkingFloor.class, entityManager);
+    this.jpaQueryFactory = new JPAQueryFactory(entityManager);
+  }
 
-    @Override
-    public Iterable<ParkingFloor> getAllParkingFloorsByParkingLot(int parkingLotId) {
-        return jpaQueryFactory.selectFrom(parkingFloor)
-                .where(parkingFloor.parkingLot.parkingLotId.eq(parkingLotId)).fetch();
-    }
+  @Override
+  public Iterable<ParkingFloor> getAllParkingFloorsByParkingLot(int parkingLotId) {
+    return jpaQueryFactory
+        .selectFrom(parkingFloor)
+        .where(parkingFloor.parkingLot.parkingLotId.eq(parkingLotId))
+        .fetch();
+  }
 }

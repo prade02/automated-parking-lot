@@ -11,11 +11,11 @@ import javax.persistence.*;
 @NoArgsConstructor
 public class ParkingLot {
 
-    @Id
-    @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int parkingLotId;
+  @Id
+  @Column(name = "id")
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private int parkingLotId;
 
-    private String name;
-    private int totalFloors;
+  private String name;
+  private int totalFloors;
 }

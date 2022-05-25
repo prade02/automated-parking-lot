@@ -4,7 +4,7 @@ import lombok.Getter;
 
 @Getter
 public class ParkingFloorDTO {
-    private int parkingFloorId;
-    private String name;
-    private int totalSlots;
+  private int parkingFloorId;
+  private String name;
+  private int totalSlots;
 }

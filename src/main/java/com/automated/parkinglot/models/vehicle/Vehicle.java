@@ -15,24 +15,24 @@ import java.util.Date;
 @AllArgsConstructor
 public class Vehicle {
 
-    @Id
-    @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int entryId;
+  @Id
+  @Column(name = "id")
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private int entryId;
 
-    private String registrationNumber;
-    @Enumerated(EnumType.STRING)
-    private GenericType vehicleType;
+  private String registrationNumber;
 
-    @ManyToOne
-    @JoinColumn(referencedColumnName = "id", name = "slot", nullable = false)
-    private Slot slot;
+  @Enumerated(EnumType.STRING)
+  private GenericType vehicleType;
 
-    @Setter
-    private Date inTime;
-    @Setter
-    private Date outTime;
-    @Setter
-    @Column(name = "fee")
-    private double amountInRupees;
+  @ManyToOne
+  @JoinColumn(referencedColumnName = "id", name = "slot", nullable = false)
+  private Slot slot;
+
+  @Setter private Date inTime;
+  @Setter private Date outTime;
+
+  @Setter
+  @Column(name = "fee")
+  private double amountInRupees;
 }

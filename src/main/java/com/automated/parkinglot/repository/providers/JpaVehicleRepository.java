@@ -11,19 +11,24 @@ import javax.persistence.EntityManager;
 import java.util.Optional;
 
 @Repository
-public class JpaVehicleRepository extends SimpleJpaRepository<Vehicle, Integer> implements VehicleRepository {
+public class JpaVehicleRepository extends SimpleJpaRepository<Vehicle, Integer>
+    implements VehicleRepository {
 
-    private final QVehicle vehicle = QVehicle.vehicle;
-    private final JPAQueryFactory jpaQueryFactory;
+  private final QVehicle vehicle = QVehicle.vehicle;
+  private final JPAQueryFactory jpaQueryFactory;
 
-    public JpaVehicleRepository(EntityManager entityManager) {
-        super(Vehicle.class, entityManager);
-        this.jpaQueryFactory = new JPAQueryFactory(entityManager);
-    }
+  public JpaVehicleRepository(EntityManager entityManager) {
+    super(Vehicle.class, entityManager);
+    this.jpaQueryFactory = new JPAQueryFactory(entityManager);
+  }
 
-    @Override
-    public Optional<Vehicle> findLatestVehicleEntry(String registration) {
-        return Optional.of(jpaQueryFactory.selectFrom(vehicle).
-                where(vehicle.registrationNumber.eq(registration)).orderBy(vehicle.inTime.desc()).fetchFirst());
-    }
+  @Override
+  public Optional<Vehicle> findLatestVehicleEntry(String registration) {
+    return Optional.of(
+        jpaQueryFactory
+            .selectFrom(vehicle)
+            .where(vehicle.registrationNumber.eq(registration))
+            .orderBy(vehicle.inTime.desc())
+            .fetchFirst());
+  }
 }
