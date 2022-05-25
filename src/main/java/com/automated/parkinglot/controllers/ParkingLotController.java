@@ -2,17 +2,18 @@ package com.automated.parkinglot.controllers;
 
 
 import com.automated.parkinglot.dto.ParkingLotDTO;
+import com.automated.parkinglot.models.parking.ParkingLot;
+import com.automated.parkinglot.service.IParkingLotService;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.web.bind.annotation.*;
-import com.automated.parkinglot.service.IParkingLotService;
-import com.automated.parkinglot.models.parking.ParkingLot;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @AllArgsConstructor
-@RestController @RequestMapping("api/v1/parkinglot")
+@RestController
+@RequestMapping("api/v1/parkinglot")
 public class ParkingLotController {
 
     private final IParkingLotService parkingLotService;

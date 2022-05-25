@@ -4,8 +4,12 @@ import lombok.*;
 
 import javax.persistence.*;
 
-@Entity @Table(name = "parking_floor")
-@Getter @NoArgsConstructor @AllArgsConstructor @Builder
+@Entity
+@Table(name = "parking_floor")
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class ParkingFloor {
 
     @Id

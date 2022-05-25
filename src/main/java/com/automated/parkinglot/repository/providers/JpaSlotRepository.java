@@ -10,9 +10,9 @@ import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.Optional;
 import javax.persistence.EntityManager;
 import javax.persistence.LockModeType;
+import java.util.Optional;
 
 @Repository
 public class JpaSlotRepository extends SimpleJpaRepository<Slot, Integer> implements SlotRepository {
@@ -42,8 +42,8 @@ public class JpaSlotRepository extends SimpleJpaRepository<Slot, Integer> implem
                 .selectFrom(slot)
                 .where(
                         slot.parkingFloor.parkingLot.parkingLotId.eq(parkingLotId)
-                        .and(slot.slotStatus.eq(SlotStatus.VACANT))
-                        .and(slot.slotType.eq(slotType))
+                                .and(slot.slotStatus.eq(SlotStatus.VACANT))
+                                .and(slot.slotType.eq(slotType))
                 )
                 .orderBy(slot.name.asc())
                 .fetchFirst();

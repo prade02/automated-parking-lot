@@ -16,7 +16,7 @@ public class GlobalExceptionHandler {
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(value = { InvalidRequestException.class })
+    @ExceptionHandler(value = {InvalidRequestException.class})
     public ErrorResponse handleInvalidRequest(Exception exception) {
         return new ErrorResponse(String.format("Error: %s", exception.getMessage()));
     }

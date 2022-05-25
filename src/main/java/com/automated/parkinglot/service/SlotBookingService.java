@@ -36,12 +36,12 @@ public class SlotBookingService implements ISlotBookingService {
         final var slot = slotBookingStrategy.bookSlot(parkingLotId, slotType);
         final Vehicle vehicle = getVehicle(vehicleRegistration, slotType, slot);
         slot.setSlotStatus(SlotStatus.OCCUPIED);
-        persistData(vehicle,slot);
+        persistData(vehicle, slot);
         return slot.getName();
     }
 
     @Transactional
-    private void persistData(Vehicle vehicle, Slot slot){
+    private void persistData(Vehicle vehicle, Slot slot) {
         vehicleRepository.save(vehicle);
         slotRepository.save(slot);
     }

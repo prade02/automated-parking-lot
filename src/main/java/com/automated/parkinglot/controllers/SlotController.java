@@ -38,7 +38,7 @@ public class SlotController {
     public SlotDTO saveNewSlot(@PathVariable int parkingFloorId, @RequestBody SlotDTO slotDTO) {
         ParkingFloor parkingFloor = parkingFloorService.getParkingFloor(parkingFloorId);
         Slot newSlot = slotService.addNewSlot(Slot.builder().parkingFloor(parkingFloor).name(slotDTO.getName())
-                                       .slotStatus(slotDTO.getSlotStatus()).slotType(slotDTO.getSlotType()).build());
+                .slotStatus(slotDTO.getSlotStatus()).slotType(slotDTO.getSlotType()).build());
         return modelMapper.map(newSlot, SlotDTO.class);
     }
 

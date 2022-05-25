@@ -7,7 +7,10 @@ import lombok.*;
 import javax.persistence.*;
 
 @Entity
-@Getter @NoArgsConstructor @AllArgsConstructor @Builder
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Slot {
 
     @Id

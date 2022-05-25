@@ -7,8 +7,12 @@ import lombok.*;
 import javax.persistence.*;
 import java.util.Date;
 
-@Entity @Table(name = "vehicle")
-@Builder @Getter @NoArgsConstructor @AllArgsConstructor
+@Entity
+@Table(name = "vehicle")
+@Builder
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Vehicle {
 
     @Id
