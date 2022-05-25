@@ -4,7 +4,6 @@ import com.automated.parkinglot.exception.InvalidRequestException;
 import com.automated.parkinglot.models.enums.SlotStatus;
 import com.automated.parkinglot.models.parking.ParkingFloor;
 import com.automated.parkinglot.models.parking.Slot;
-import com.automated.parkinglot.repository.ParkingFloorRepository;
 import com.automated.parkinglot.repository.SlotRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,7 +15,6 @@ import java.util.*;
 public class SlotService implements ISlotService {
 
     private final SlotRepository slotRepository;
-    private final ParkingFloorRepository parkingFloorRepository;
 
     @Override
     public List<Slot> getAllSlotsForFloor(int parkingFloorId) {
@@ -43,21 +41,13 @@ public class SlotService implements ISlotService {
 
     @Override
     public Slot addNewSlot(Slot slot) {
-        var optionalParkingFloor = parkingFloorRepository.findById(slot.getParkingFloor());
-        if (optionalParkingFloor.isEmpty())
-            throw new InvalidRequestException("Invalid parking floor");
-        var parkingFloor = optionalParkingFloor.get();
-        if (!canAddNewSlots(parkingFloor))
-            throw new InvalidRequestException("Can not add new slots to this floor");
-        slot.setName(String.format("%s_%s", parkingFloor.getName(), slot.getName()));
+        slot.setName(String.format("%s_%s", slot.getParkingFloor().getName(), slot.getName()));
         return slotRepository.save(slot);
     }
 
     @Override
-    public Slot updateSlot(int slotId, Slot slot) {
-        if (slotId != slot.getSlotId())
-            throw new InvalidRequestException("Id passed and Id in entity does not match");
-        else if (slotRepository.findById(slotId).isEmpty())
+    public Slot updateSlot(Slot slot) {
+        if (slotRepository.findById(slot.getSlotId()).isEmpty())
             throw new InvalidRequestException("Id not found");
 
         return slotRepository.save(slot);
@@ -104,9 +94,9 @@ public class SlotService implements ISlotService {
         final var vacantSlots = slotRepository.getAllSlotsForStatus(slotStatus, parkingLotId);
         final var vacantSlotsPerFloorForType = new TreeMap<Integer, Map<String, Integer>>();
         for (Slot vacantSlot : vacantSlots) {
-            if (!vacantSlotsPerFloorForType.containsKey(vacantSlot.getParkingFloor()))
-                vacantSlotsPerFloorForType.put(vacantSlot.getParkingFloor(), new HashMap<>());
-            var floor = vacantSlotsPerFloorForType.get(vacantSlot.getParkingFloor());
+            if (!vacantSlotsPerFloorForType.containsKey(vacantSlot.getParkingFloor().getParkingFloorId()))
+                vacantSlotsPerFloorForType.put(vacantSlot.getParkingFloor().getParkingFloorId(), new HashMap<>());
+            var floor = vacantSlotsPerFloorForType.get(vacantSlot.getParkingFloor().getParkingFloorId());
             String sSlotType = vacantSlot.getSlotType().name();
             if (!floor.containsKey(sSlotType))
                 floor.put(sSlotType, 0);

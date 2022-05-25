@@ -15,7 +15,6 @@ import java.util.List;
 @AllArgsConstructor
 public class ParkingFloorService implements IParkingFloorService {
 
-    private final ParkingLotRepository parkingLotRepository;
     private final ParkingFloorRepository parkingFloorRepository;
 
     @Override
@@ -36,23 +35,14 @@ public class ParkingFloorService implements IParkingFloorService {
 
     @Override
     public ParkingFloor addNewParkingFloor(final ParkingFloor parkingFloor) {
-        var optionalParkingLotName = parkingLotRepository.findById(parkingFloor.getParkingLot());
-        if (optionalParkingLotName.isEmpty())
-            throw new InvalidRequestException("Invalid Parking Lot");
-        var parkingLot = optionalParkingLotName.get();
-        if (!canAddNewFloor(parkingLot))
+        if (!canAddNewFloor(parkingFloor.getParkingLot()))
             throw new InvalidRequestException("No new floors can be added to the parking lot");
-        parkingFloor.setName(String.format("%s_%s", parkingLot.getName(), parkingFloor.getName()));
+        parkingFloor.setName(String.format("%s_%s", parkingFloor.getParkingLot().getName(), parkingFloor.getName()));
         return parkingFloorRepository.save(parkingFloor);
     }
 
     @Override
-    public ParkingFloor updateParkingFloor(final int id, final ParkingFloor parkingFloor) {
-        if (id != parkingFloor.getParkingFloorId())
-            throw new InvalidRequestException("Given Id and Id of entity does not match");
-        else if (parkingFloorRepository.findById(id).isEmpty())
-            throw new InvalidRequestException("Given Id not found");
-
+    public ParkingFloor updateParkingFloor(final ParkingFloor parkingFloor) {
         return parkingFloorRepository.save(parkingFloor);
     }
 

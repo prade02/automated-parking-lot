@@ -18,9 +18,7 @@ public class ParkingLotService implements IParkingLotService {
 
     @Override
     public List<ParkingLot> getAllParkingLots() {
-        final var parkingLots = new ArrayList<ParkingLot>();
-        parkingLotRepository.findAll().iterator().forEachRemaining(parkingLots::add);
-        return parkingLots;
+        return parkingLotRepository.findAll();
     }
 
     @Override
@@ -37,10 +35,8 @@ public class ParkingLotService implements IParkingLotService {
     }
 
     @Override
-    public ParkingLot updateParkingLot(final int id, final ParkingLot parkingLot) {
-        if (id != parkingLot.getParkingLotId())
-            throw new InvalidRequestException("Id passed and Id in entity does not match");
-        else if (parkingLotRepository.findById(id).isEmpty())
+    public ParkingLot updateParkingLot(final ParkingLot parkingLot) {
+        if (parkingLotRepository.findById(parkingLot.getParkingLotId()).isEmpty())
             throw new InvalidRequestException("Id not found");
 
         return parkingLotRepository.save(parkingLot);
@@ -48,10 +44,6 @@ public class ParkingLotService implements IParkingLotService {
 
     @Override
     public void deleteParkingLot(final int id) {
-        final var optionalParkingLot = parkingLotRepository.findById(id);
-        if (optionalParkingLot.isEmpty())
-            throw new InvalidRequestException("Id not found");
-
-        parkingLotRepository.delete(optionalParkingLot.get());
+        parkingLotRepository.delete(getParkingLot(id));
     }
 }

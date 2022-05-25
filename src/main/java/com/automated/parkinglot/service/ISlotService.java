@@ -11,7 +11,7 @@ public interface ISlotService {
     Slot getSlotById(int slotId);
     Slot getSlotByName(String name);
     Slot addNewSlot(Slot slot);
-    Slot updateSlot(int slotId, Slot slot);
+    Slot updateSlot(Slot slot);
     void deleteSlotById(int id);
     void deleteSlotByName(String name);
     Map<Integer, Map<String, Integer>> getCountOfVacantSlotsPerFloorPerType(int parkingLotId);

@@ -1,13 +1,11 @@
 package com.automated.parkinglot.models.parking;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Entity @Table(name = "parking_floor")
-@Getter @NoArgsConstructor
+@Getter @NoArgsConstructor @AllArgsConstructor @Builder
 public class ParkingFloor {
 
     @Id
@@ -17,6 +15,10 @@ public class ParkingFloor {
 
     @Setter
     private String name;
-    private int parkingLot;
+
+    @ManyToOne
+    @JoinColumn(name = "parkingLot", referencedColumnName = "id", nullable = false)
+    private ParkingLot parkingLot;
+
     private int totalSlots;
 }

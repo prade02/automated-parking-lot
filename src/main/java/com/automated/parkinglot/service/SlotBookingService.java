@@ -10,6 +10,7 @@ import com.automated.parkinglot.strategies.slot_booking.SlotBookingStrategy;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.time.Instant;
 import java.util.Date;
 import java.util.Map;
@@ -34,11 +35,16 @@ public class SlotBookingService implements ISlotBookingService {
     public String bookSlot(final int parkingLotId, final String vehicleRegistration, final GenericType slotType) {
         final var slot = slotBookingStrategy.bookSlot(parkingLotId, slotType);
         final Vehicle vehicle = getVehicle(vehicleRegistration, slotType, slot);
-        // TODO: below operations should be either all success or all fail.
-        vehicleRepository.save(vehicle);
         slot.setSlotStatus(SlotStatus.OCCUPIED);
-        slotRepository.save(slot);
+        persistData(vehicle,slot);
         return slot.getName();
+    }
+
+    @Transactional
+    private void persistData(Vehicle vehicle, Slot slot){
+        // TODO: Should transactions be in service layer
+        vehicleRepository.save(vehicle);
+        slotRepository.save(slot);
     }
 
     private Vehicle getVehicle(String vehicleRegistration, GenericType vehicleType, Slot slot) {
@@ -46,7 +52,7 @@ public class SlotBookingService implements ISlotBookingService {
                 .vehicleType(vehicleType)
                 .registrationNumber(vehicleRegistration)
                 .inTime(Date.from(Instant.now()))
-                .slotId(slot.getSlotId())
+                .slot(slot)
                 .build();
     }
 }

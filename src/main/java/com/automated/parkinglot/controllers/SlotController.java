@@ -1,13 +1,14 @@
 package com.automated.parkinglot.controllers;
 
 import com.automated.parkinglot.dto.SlotDTO;
+import com.automated.parkinglot.models.parking.ParkingFloor;
 import com.automated.parkinglot.models.parking.Slot;
+import com.automated.parkinglot.service.IParkingFloorService;
 import com.automated.parkinglot.service.ISlotService;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -19,6 +20,7 @@ import java.util.stream.StreamSupport;
 public class SlotController {
 
     private final ISlotService slotService;
+    private final IParkingFloorService parkingFloorService;
     private final ModelMapper modelMapper;
 
     @GetMapping("all/{parkingFloorId}")
@@ -32,18 +34,18 @@ public class SlotController {
         return modelMapper.map(slotService.getSlotById(id), SlotDTO.class);
     }
 
-    @PostMapping
-    public SlotDTO saveNewSlot(@RequestBody SlotDTO slotDTO) {
-        return modelMapper.map(
-                slotService.addNewSlot(modelMapper.map(slotDTO, Slot.class)),
-                SlotDTO.class
-        );
+    @PostMapping("{parkingFloorId}")
+    public SlotDTO saveNewSlot(@PathVariable int parkingFloorId, @RequestBody SlotDTO slotDTO) {
+        ParkingFloor parkingFloor = parkingFloorService.getParkingFloor(parkingFloorId);
+        Slot newSlot = slotService.addNewSlot(Slot.builder().parkingFloor(parkingFloor).name(slotDTO.getName())
+                                       .slotStatus(slotDTO.getSlotStatus()).slotType(slotDTO.getSlotType()).build());
+        return modelMapper.map(newSlot, SlotDTO.class);
     }
 
     @PutMapping("{id}")
-    public SlotDTO updateSlot(@PathVariable int id, @RequestBody SlotDTO slotDTO) {
+    public SlotDTO updateSlot(@RequestBody SlotDTO slotDTO) {
         return modelMapper.map(
-                slotService.updateSlot(id, modelMapper.map(slotDTO, Slot.class)),
+                slotService.updateSlot(modelMapper.map(slotDTO, Slot.class)),
                 SlotDTO.class
         );
     }

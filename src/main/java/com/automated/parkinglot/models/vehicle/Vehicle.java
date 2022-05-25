@@ -1,6 +1,7 @@
 package com.automated.parkinglot.models.vehicle;
 
 import com.automated.parkinglot.models.enums.GenericType;
+import com.automated.parkinglot.models.parking.Slot;
 import lombok.*;
 
 import javax.persistence.*;
@@ -19,8 +20,9 @@ public class Vehicle {
     @Enumerated(EnumType.STRING)
     private GenericType vehicleType;
 
-    @Column(name = "slot")
-    private int slotId;
+    @ManyToOne
+    @JoinColumn(referencedColumnName = "id", name = "slot", nullable = false)
+    private Slot slot;
 
     @Setter
     private Date inTime;

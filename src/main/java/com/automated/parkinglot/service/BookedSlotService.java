@@ -3,6 +3,7 @@ package com.automated.parkinglot.service;
 import com.automated.parkinglot.exception.InvalidRequestException;
 import com.automated.parkinglot.models.enums.GenericType;
 import com.automated.parkinglot.models.enums.SlotStatus;
+import com.automated.parkinglot.models.parking.Slot;
 import com.automated.parkinglot.models.vehicle.Vehicle;
 import com.automated.parkinglot.repository.SlotRepository;
 import com.automated.parkinglot.repository.VehicleRepository;
@@ -27,7 +28,7 @@ public class BookedSlotService implements IBookedSlotService {
         vehicleRepository.save(vehicle);
 
         // update slot as `vacant` in slot table
-        releaseSlot(vehicle.getSlotId());
+        releaseSlot(vehicle.getSlot());
 
         // return the double amount
         return vehicle.getAmountInRupees();
@@ -59,11 +60,7 @@ public class BookedSlotService implements IBookedSlotService {
         return vehicle;
     }
 
-    private void releaseSlot(final int slotId) {
-        final var optionalSlot = slotRepository.findById(slotId);
-        if (optionalSlot.isEmpty())
-            throw new InvalidRequestException("Slot associated with Vehicle not found");
-        final var slot = optionalSlot.get();
+    private void releaseSlot(final Slot slot) {
         slot.setSlotStatus(SlotStatus.VACANT);
         slotRepository.save(slot);
     }

@@ -37,10 +37,10 @@ public class ParkingLotController {
         );
     }
 
-    @PutMapping("{id}")
-    public ParkingLotDTO updateParkingLot(@PathVariable int id, @RequestBody ParkingLotDTO parkingLotDTO) {
+    @PutMapping
+    public ParkingLotDTO updateParkingLot(@RequestBody ParkingLotDTO parkingLotDTO) {
         return modelMapper.map(
-                parkingLotService.updateParkingLot(id, modelMapper.map(parkingLotDTO, ParkingLot.class)),
+                parkingLotService.updateParkingLot(modelMapper.map(parkingLotDTO, ParkingLot.class)),
                 ParkingLotDTO.class
         );
     }

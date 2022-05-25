@@ -3,6 +3,7 @@ package com.automated.parkinglot.controllers;
 import com.automated.parkinglot.dto.ParkingFloorDTO;
 import com.automated.parkinglot.models.parking.ParkingFloor;
 import com.automated.parkinglot.service.IParkingFloorService;
+import com.automated.parkinglot.service.IParkingLotService;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +17,7 @@ import java.util.stream.Collectors;
 public class ParkingFloorController {
 
     private final IParkingFloorService parkingFloorService;
+    private final IParkingLotService parkingLotService;
     private final ModelMapper modelMapper;
 
     @GetMapping("all/{parkingLotId}")
@@ -29,18 +31,18 @@ public class ParkingFloorController {
         return modelMapper.map(parkingFloorService.getParkingFloor(id), ParkingFloorDTO.class);
     }
 
-    @PostMapping
-    public ParkingFloorDTO saveNewParkingFloor(@RequestBody ParkingFloorDTO parkingFloorDTO) {
-        return modelMapper.map(
-                parkingFloorService.addNewParkingFloor(modelMapper.map(parkingFloorDTO, ParkingFloor.class)),
-                ParkingFloorDTO.class
-        );
+    @PostMapping("{parkingLotId}")
+    public ParkingFloorDTO saveNewParkingFloor(@PathVariable int parkingLotId, @RequestBody ParkingFloorDTO parkingFloorDTO) {
+        var parkingLot = parkingLotService.getParkingLot(parkingLotId);
+        var newParkingFloor = ParkingFloor.builder().parkingLot(parkingLot)
+                .name(parkingFloorDTO.getName()).totalSlots(parkingFloorDTO.getTotalSlots()).build();
+        return modelMapper.map(parkingFloorService.addNewParkingFloor(newParkingFloor), ParkingFloorDTO.class);
     }
 
-    @PutMapping("{id}")
-    public ParkingFloorDTO updateParkingFloor(@PathVariable int id, @RequestBody ParkingFloorDTO parkingFloorDTO) {
+    @PutMapping
+    public ParkingFloorDTO updateParkingFloor(@RequestBody ParkingFloorDTO parkingFloorDTO) {
         return modelMapper.map(
-                parkingFloorService.updateParkingFloor(id, modelMapper.map(parkingFloorDTO, ParkingFloor.class)),
+                parkingFloorService.updateParkingFloor(modelMapper.map(parkingFloorDTO, ParkingFloor.class)),
                 ParkingFloorDTO.class
         );
     }
