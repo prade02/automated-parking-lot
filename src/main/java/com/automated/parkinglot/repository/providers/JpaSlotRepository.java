@@ -40,22 +40,6 @@ public class JpaSlotRepository extends SimpleJpaRepository<Slot, Integer>
   }
 
   @Override
-  @Lock(LockModeType.PESSIMISTIC_READ)
-  public Slot getAvailableSlot(int parkingLotId, GenericType slotType) {
-    return jpaQueryFactory
-        .selectFrom(slot)
-        .where(
-            slot.parkingFloor
-                .parkingLot
-                .parkingLotId
-                .eq(parkingLotId)
-                .and(slot.slotStatus.eq(SlotStatus.VACANT))
-                .and(slot.slotType.eq(slotType)))
-        .orderBy(slot.name.asc())
-        .fetchFirst();
-  }
-
-  @Override
   public Iterable<Slot> getAllSlotsForStatus(SlotStatus status, int parkingLotId) {
     return jpaQueryFactory
         .selectFrom(slot)
