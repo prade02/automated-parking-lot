@@ -1,6 +1,5 @@
 package com.automated.parkinglot.strategies.slot_booking;
 
-import com.automated.parkinglot.exception.InvalidRequestException;
 import com.automated.parkinglot.models.enums.GenericType;
 import com.automated.parkinglot.models.parking.Slot;
 import com.automated.parkinglot.repository.SlotRepository;
@@ -15,8 +14,6 @@ public class LowestOnAllFromDb implements SlotBookingStrategy {
 
   @Override
   public Slot bookSlot(int parkingLotId, GenericType slotType) {
-    var slot = slotRepository.getAvailableSlot(parkingLotId, slotType);
-    if (slot == null) throw new InvalidRequestException("No slots available");
-    return slot;
+    return slotRepository.getAvailableSlot(parkingLotId, slotType);
   }
 }

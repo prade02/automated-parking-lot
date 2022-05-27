@@ -1,5 +1,6 @@
 package com.automated.parkinglot.service;
 
+import com.automated.parkinglot.exception.NoSlotAvailableException;
 import com.automated.parkinglot.models.enums.GenericType;
 import com.automated.parkinglot.models.enums.SlotStatus;
 import com.automated.parkinglot.models.parking.Slot;
@@ -36,6 +37,8 @@ public class SlotBookingService implements ISlotBookingService {
   public String bookSlot(
       final int parkingLotId, final String vehicleRegistration, final GenericType slotType) {
     final var slot = slotBookingStrategy.bookSlot(parkingLotId, slotType);
+    if (slot == null)
+      throw new NoSlotAvailableException("No slot available");
     final Vehicle vehicle = getVehicle(vehicleRegistration, slotType, slot);
     slot.setSlotStatus(SlotStatus.OCCUPIED);
     persistData(vehicle, slot);
