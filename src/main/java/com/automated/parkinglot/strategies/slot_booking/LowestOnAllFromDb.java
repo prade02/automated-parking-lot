@@ -14,7 +14,7 @@ import javax.persistence.LockModeType;
 @Component
 public class LowestOnAllFromDb implements SlotBookingStrategy {
 
-  private QSlot slot = QSlot.slot;
+  private final QSlot slot = QSlot.slot;
   private final JPAQueryFactory jpaQueryFactory;
 
   public LowestOnAllFromDb(EntityManager entityManager) {
