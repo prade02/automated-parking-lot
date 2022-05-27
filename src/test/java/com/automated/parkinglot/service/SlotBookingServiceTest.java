@@ -55,7 +55,6 @@ public class SlotBookingServiceTest {
 
     // then
     verify(vehicleRepository).save(vehicleArgumentCaptor.capture());
-    verify(slotRepository).save(slotArgumentCaptor.capture());
     var capturedVehicle = vehicleArgumentCaptor.getValue();
     assertThat(slotId).isEqualTo(SLOT_NAME);
     assertThat(capturedVehicle.getVehicleType()).isEqualTo(GenericType.CAR);
