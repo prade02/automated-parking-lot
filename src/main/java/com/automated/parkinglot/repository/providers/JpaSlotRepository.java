@@ -1,17 +1,14 @@
 package com.automated.parkinglot.repository.providers;
 
-import com.automated.parkinglot.models.enums.GenericType;
 import com.automated.parkinglot.models.enums.SlotStatus;
 import com.automated.parkinglot.models.parking.QSlot;
 import com.automated.parkinglot.models.parking.Slot;
 import com.automated.parkinglot.repository.SlotRepository;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
-import javax.persistence.LockModeType;
 import java.util.Optional;
 
 @Repository
@@ -36,7 +33,8 @@ public class JpaSlotRepository extends SimpleJpaRepository<Slot, Integer>
 
   @Override
   public Optional<Slot> findByName(String name) {
-    return Optional.of(jpaQueryFactory.selectFrom(slot).where(slot.name.eq(name)).fetchFirst());
+    return Optional.ofNullable(
+        jpaQueryFactory.selectFrom(slot).where(slot.name.eq(name)).fetchFirst());
   }
 
   @Override
