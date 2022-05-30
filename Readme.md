@@ -6,3 +6,4 @@ Version 3.0
     4. Enabled CORS
     5. Added lock when getting available slot during slot booking
     6. Added Transaction while assigning a slot to a vehicle and changing the status of slot(during slot booking)
+    7. Added unit tests using JUnit framework
