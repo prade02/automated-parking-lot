@@ -6,12 +6,12 @@ import com.automated.parkinglot.models.parking.QSlot;
 import com.automated.parkinglot.models.parking.Slot;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.data.jpa.repository.Lock;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.LockModeType;
 
-@Component
+@Repository
 public class LowestOnAllFromDb implements SlotBookingStrategy {
 
   private final QSlot slot = QSlot.slot;
@@ -33,7 +33,8 @@ public class LowestOnAllFromDb implements SlotBookingStrategy {
                 .eq(parkingLotId)
                 .and(slot.slotStatus.eq(SlotStatus.VACANT))
                 .and(slot.slotType.eq(slotType)))
-        .orderBy(slot.name.asc())
+        .orderBy(slot.parkingFloor.parkingFloorId.asc())
+        .orderBy(slot.slotId.asc())
         .fetchFirst();
   }
 }
