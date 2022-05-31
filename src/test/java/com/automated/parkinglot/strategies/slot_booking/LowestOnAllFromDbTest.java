@@ -119,65 +119,31 @@ class LowestOnAllFromDbTest {
   }
 
   @Test
-  void tryBookSlotWhenAvailable_ForCar() {
+  void tryBookSlotWhenAvailable() {
     // when
-    var slot = lowestOnAllFromDb.bookSlot(parkingLot.getParkingLotId(), GenericType.CAR);
+    var slotsForCar = lowestOnAllFromDb.bookSlot(parkingLot.getParkingLotId(), GenericType.CAR);
+    var slotsForBike = lowestOnAllFromDb.bookSlot(parkingLot.getParkingLotId(), GenericType.BIKE);
+    var slotsForTruck = lowestOnAllFromDb.bookSlot(parkingLot.getParkingLotId(), GenericType.TRUCK);
 
     // then
-    assertThat(slot.getName()).isEqualTo(LOWEST_SLOT_FOR_CAR);
+    assertThat(slotsForCar.getName()).isEqualTo(LOWEST_SLOT_FOR_CAR);
+    assertThat(slotsForBike.getName()).isEqualTo(LOWEST_SLOT_FOR_BIKE);
+    assertThat(slotsForTruck.getName()).isEqualTo(LOWEST_SLOT_FOR_TRUCK);
   }
 
   @Test
-  void tryBookSlotWhenAvailable_ForBike() {
-    // when
-    var slot = lowestOnAllFromDb.bookSlot(parkingLot.getParkingLotId(), GenericType.BIKE);
-
-    // then
-    assertThat(slot.getName()).isEqualTo(LOWEST_SLOT_FOR_BIKE);
-  }
-
-  @Test
-  void tryBookSlotWhenAvailable_ForTruck() {
-    // when
-    var slot = lowestOnAllFromDb.bookSlot(parkingLot.getParkingLotId(), GenericType.TRUCK);
-
-    // then
-    assertThat(slot.getName()).isEqualTo(LOWEST_SLOT_FOR_TRUCK);
-  }
-
-  @Test
-  void tryBookSlotWhenNoSlotAvailable_ForCar() {
+  void tryBookSlotWhenNoSlotAvailable() {
     // given
     setUpForAllSlotsOccupied();
 
     // when
-    var slot = lowestOnAllFromDb.bookSlot(parkingLot.getParkingLotId(), GenericType.CAR);
+    var slotsForCar = lowestOnAllFromDb.bookSlot(parkingLot.getParkingLotId(), GenericType.CAR);
+    var slotsForBike = lowestOnAllFromDb.bookSlot(parkingLot.getParkingLotId(), GenericType.BIKE);
+    var slotsForTruck = lowestOnAllFromDb.bookSlot(parkingLot.getParkingLotId(), GenericType.TRUCK);
 
     // then
-    assertThat(slot).isNull();
-  }
-
-  @Test
-  void tryBookSlotWhenNoSlotAvailable_ForBike() {
-    // given
-    setUpForAllSlotsOccupied();
-
-    // when
-    var slot = lowestOnAllFromDb.bookSlot(parkingLot.getParkingLotId(), GenericType.BIKE);
-
-    // then
-    assertThat(slot).isNull();
-  }
-
-  @Test
-  void tryBookSlotWhenNoSlotAvailable_ForTruck() {
-    // given
-    setUpForAllSlotsOccupied();
-
-    // when
-    var slot = lowestOnAllFromDb.bookSlot(parkingLot.getParkingLotId(), GenericType.TRUCK);
-
-    // then
-    assertThat(slot).isNull();
+    assertThat(slotsForCar).isNull();
+    assertThat(slotsForBike).isNull();
+    assertThat(slotsForTruck).isNull();
   }
 }
