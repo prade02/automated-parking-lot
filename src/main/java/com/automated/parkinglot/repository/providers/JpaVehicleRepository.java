@@ -24,7 +24,7 @@ public class JpaVehicleRepository extends SimpleJpaRepository<Vehicle, Integer>
 
   @Override
   public Optional<Vehicle> findLatestVehicleEntry(String registration) {
-    return Optional.of(
+    return Optional.ofNullable(
         jpaQueryFactory
             .selectFrom(vehicle)
             .where(vehicle.registrationNumber.eq(registration))
