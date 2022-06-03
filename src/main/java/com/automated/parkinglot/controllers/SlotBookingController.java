@@ -13,11 +13,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("api/v1/slot-booking")
 public class SlotBookingController {
 
-    private final ISlotBookingService slotBookingService;
+  private final ISlotBookingService slotBookingService;
 
-    @GetMapping("book/{parkingLot}/{vehicleRegistration}/{slotType}")
-    public String bookSlot(@PathVariable int parkingLot, @PathVariable String vehicleRegistration,
-                           @PathVariable GenericType slotType) {
-        return slotBookingService.bookSlot(parkingLot, vehicleRegistration, slotType);
-    }
+  @GetMapping("book/{parkingLot}/{vehicleRegistration}/{slotType}")
+  public String bookSlot(
+      @PathVariable int parkingLot,
+      @PathVariable String vehicleRegistration,
+      @PathVariable GenericType slotType) {
+    return slotBookingService.bookSlot(parkingLot, vehicleRegistration, slotType);
+  }
 }

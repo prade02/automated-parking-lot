@@ -1,26 +1,40 @@
 package com.automated.parkinglot.strategies.slot_booking;
 
-import com.automated.parkinglot.exception.InvalidRequestException;
 import com.automated.parkinglot.models.enums.GenericType;
+import com.automated.parkinglot.models.enums.SlotStatus;
+import com.automated.parkinglot.models.parking.QSlot;
 import com.automated.parkinglot.models.parking.Slot;
-import com.automated.parkinglot.repository.SlotRepository;
-import lombok.AllArgsConstructor;
-import org.springframework.stereotype.Component;
+import com.querydsl.jpa.impl.JPAQueryFactory;
+import org.springframework.data.jpa.repository.Lock;
+import org.springframework.stereotype.Repository;
 
-@Component
-@AllArgsConstructor
+import javax.persistence.EntityManager;
+import javax.persistence.LockModeType;
+
+@Repository
 public class LowestOnAllFromDb implements SlotBookingStrategy {
 
-    private final SlotRepository slotRepository;
+  private final QSlot slot = QSlot.slot;
+  private final JPAQueryFactory jpaQueryFactory;
 
-    @Override
-    public Slot bookSlot(int parkingLotId, GenericType slotType) {
-        var slotId = slotRepository.getAvailableSlot(parkingLotId, slotType.name());
-        if (slotId == null)
-            throw new InvalidRequestException("No slots available");
-        var optionalSlot = slotRepository.findById(slotId);
-        if (optionalSlot.isEmpty())
-            throw new InvalidRequestException("Unable to allocate slot");
-        return optionalSlot.get();
-    }
+  public LowestOnAllFromDb(EntityManager entityManager) {
+    this.jpaQueryFactory = new JPAQueryFactory(entityManager);
+  }
+
+  @Override
+  @Lock(LockModeType.PESSIMISTIC_READ)
+  public Slot bookSlot(int parkingLotId, GenericType slotType) {
+    return jpaQueryFactory
+        .selectFrom(slot)
+        .where(
+            slot.parkingFloor
+                .parkingLot
+                .parkingLotId
+                .eq(parkingLotId)
+                .and(slot.slotStatus.eq(SlotStatus.VACANT))
+                .and(slot.slotType.eq(slotType)))
+        .orderBy(slot.parkingFloor.parkingFloorId.asc())
+        .orderBy(slot.slotId.asc())
+        .fetchFirst();
+  }
 }

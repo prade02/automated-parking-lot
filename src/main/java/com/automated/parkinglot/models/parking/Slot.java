@@ -2,28 +2,32 @@ package com.automated.parkinglot.models.parking;
 
 import com.automated.parkinglot.models.enums.GenericType;
 import com.automated.parkinglot.models.enums.SlotStatus;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
-@Getter @NoArgsConstructor
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Slot {
 
-    @Id
-    @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int slotId;
+  @Id
+  @Column(name = "id")
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private int slotId;
 
-    @Setter
-    private String name;
-    private int parkingFloor;
-    @Enumerated(EnumType.STRING)
-    private GenericType slotType;
+  @Setter private String name;
 
-    @Setter
-    @Enumerated(EnumType.STRING)
-    private SlotStatus slotStatus;
+  @ManyToOne
+  @JoinColumn(name = "parkingFloor", referencedColumnName = "id", nullable = false)
+  private ParkingFloor parkingFloor;
+
+  @Enumerated(EnumType.STRING)
+  private GenericType slotType;
+
+  @Setter
+  @Enumerated(EnumType.STRING)
+  private SlotStatus slotStatus;
 }

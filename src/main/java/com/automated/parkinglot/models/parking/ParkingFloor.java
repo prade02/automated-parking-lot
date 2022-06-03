@@ -1,22 +1,27 @@
 package com.automated.parkinglot.models.parking;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 
-@Entity @Table(name = "parking_floor")
-@Getter @NoArgsConstructor
+@Entity
+@Table(name = "parking_floor")
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class ParkingFloor {
 
-    @Id
-    @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int parkingFloorId;
+  @Id
+  @Column(name = "id")
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private int parkingFloorId;
 
-    @Setter
-    private String name;
-    private int parkingLot;
-    private int totalSlots;
+  @Setter private String name;
+
+  @ManyToOne
+  @JoinColumn(name = "parkingLot", referencedColumnName = "id", nullable = false)
+  private ParkingLot parkingLot;
+
+  private int totalSlots;
 }
