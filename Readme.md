@@ -1,4 +1,5 @@
 Version 4.0
+
     1. API is not secured
     2. Replace QueryDSL with Criteria API
 
