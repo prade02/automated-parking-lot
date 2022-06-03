@@ -174,6 +174,7 @@ class JpaVehicleRepositoryTest {
             parseDate(VEHICLE_ONE_OUT_DATE_LATER),
             slotForReUse);
     jpaVehicleRepository.save(vehicle);
+
     // when
     Optional<Vehicle> latestVehicleEntry =
         jpaVehicleRepository.findLatestVehicleEntry(KNOWN_REGISTRATION_NUMBER_ONE);
