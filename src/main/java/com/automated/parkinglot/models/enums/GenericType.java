@@ -5,8 +5,8 @@ public enum GenericType {
     CAR,
     TRUCK;
 
-    public static int getVehicleFeePerHour(GenericType vehicleType) {
-        return switch (vehicleType) {
+    public int getVehicleFeePerHour() {
+        return switch (this) {
             case BIKE -> 10;
             case CAR -> 20;
             case TRUCK -> 30;

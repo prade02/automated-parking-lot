@@ -1,53 +1,78 @@
 package com.automated.parkinglot.repository.providers;
 
 import com.automated.parkinglot.models.enums.SlotStatus;
-import com.automated.parkinglot.models.parking.QSlot;
 import com.automated.parkinglot.models.parking.Slot;
 import com.automated.parkinglot.repository.SlotRepository;
-import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Order;
+import javax.persistence.criteria.Root;
 import java.util.Optional;
 
 @Repository
 public class JpaSlotRepository extends SimpleJpaRepository<Slot, Integer>
     implements SlotRepository {
 
-  private final QSlot slot = QSlot.slot;
-  private final JPAQueryFactory jpaQueryFactory;
+  private final EntityManager entityManager;
+  private final CriteriaBuilder criteriaBuilder;
 
   public JpaSlotRepository(EntityManager entityManager) {
     super(Slot.class, entityManager);
-    this.jpaQueryFactory = new JPAQueryFactory(entityManager);
+    this.entityManager = entityManager;
+    this.criteriaBuilder = this.entityManager.getCriteriaBuilder();
   }
 
   @Override
   public Iterable<Slot> findAllSlotsByParkingFloor(int parkingFloorId) {
-    return jpaQueryFactory
-        .selectFrom(slot)
-        .where(slot.parkingFloor.parkingFloorId.eq(parkingFloorId))
-        .fetch();
+    CriteriaQuery<Slot> query = criteriaBuilder.createQuery(Slot.class);
+    Root<Slot> slot = query.from(Slot.class);
+
+    // where clause
+    Predicate parkingFloorPredicate =
+        criteriaBuilder.equal(slot.get("parkingFloor").get("parkingFloorId"), parkingFloorId);
+
+    // wire predicate to query
+    query.where(parkingFloorPredicate);
+
+    return entityManager.createQuery(query).getResultList();
   }
 
   @Override
   public Optional<Slot> findByName(String name) {
-    return Optional.ofNullable(
-        jpaQueryFactory.selectFrom(slot).where(slot.name.eq(name)).fetchFirst());
+    CriteriaQuery<Slot> query = criteriaBuilder.createQuery(Slot.class);
+    Root<Slot> slot = query.from(Slot.class);
+
+    // where clause
+    Predicate namePredicate = criteriaBuilder.equal(slot.get("name"), name);
+
+    // wire predicate to query
+    query.where(namePredicate);
+
+    return entityManager.createQuery(query).getResultStream().findFirst();
   }
 
   @Override
   public Iterable<Slot> getAllSlotsForStatus(SlotStatus status, int parkingLotId) {
-    return jpaQueryFactory
-        .selectFrom(slot)
-        .where(
-            slot.parkingFloor
-                .parkingLot
-                .parkingLotId
-                .eq(parkingLotId)
-                .and(slot.slotStatus.eq(status)))
-        .orderBy(slot.name.asc())
-        .fetch();
+    CriteriaQuery<Slot> query = criteriaBuilder.createQuery(Slot.class);
+    Root<Slot> slot = query.from(Slot.class);
+
+    // where clause
+    Predicate parkingLotPredicate =
+        criteriaBuilder.equal(slot.get("parkingFloor").get("parkingLot"), parkingLotId);
+    Predicate statusPredicate = criteriaBuilder.equal(slot.get("slotStatus"), status);
+
+    // order clause
+    Order nameOrderAsc = criteriaBuilder.asc(slot.get("name"));
+
+    // wire clauses to query
+    query.where(parkingLotPredicate, statusPredicate);
+    query.orderBy(nameOrderAsc);
+
+    return entityManager.createQuery(query).getResultList();
   }
 }
