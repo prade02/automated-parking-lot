@@ -71,6 +71,6 @@ public class BookedSlotService implements IBookedSlotService {
   }
 
   private double calculateAmountForHours(final int hours, final GenericType vehicleType) {
-    return hours * GenericType.getVehicleFeePerHour(vehicleType);
+    return hours * vehicleType.getVehicleFeePerHour();
   }
 }
