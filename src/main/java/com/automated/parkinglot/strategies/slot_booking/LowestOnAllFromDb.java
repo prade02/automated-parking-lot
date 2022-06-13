@@ -2,7 +2,9 @@ package com.automated.parkinglot.strategies.slot_booking;
 
 import com.automated.parkinglot.models.enums.GenericType;
 import com.automated.parkinglot.models.enums.SlotStatus;
+import com.automated.parkinglot.models.parking.ParkingFloor_;
 import com.automated.parkinglot.models.parking.Slot;
+import com.automated.parkinglot.models.parking.Slot_;
 import lombok.AllArgsConstructor;
 import org.springframework.data.jpa.repository.Lock;
 import org.springframework.stereotype.Repository;
@@ -30,14 +32,14 @@ public class LowestOnAllFromDb implements SlotBookingStrategy {
 
     // set predicates/conditions - where clause
     Predicate parkingLotPredicate =
-        criteriaBuilder.equal(slot.get("parkingFloor").get("parkingLot"), parkingLotId);
+        criteriaBuilder.equal(slot.get(Slot_.PARKING_FLOOR).get(ParkingFloor_.PARKING_LOT), parkingLotId);
     Predicate slotStatusPredicate =
-        criteriaBuilder.equal(slot.get("slotStatus"), SlotStatus.VACANT);
-    Predicate slotTypePredicate = criteriaBuilder.equal(slot.get("slotType"), slotType);
+        criteriaBuilder.equal(slot.get(Slot_.SLOT_STATUS), SlotStatus.VACANT);
+    Predicate slotTypePredicate = criteriaBuilder.equal(slot.get(Slot_.SLOT_TYPE), slotType);
 
     // set order by clause
-    Order parkingFloorOrder = criteriaBuilder.asc(slot.get("parkingFloor"));
-    Order slotOrder = criteriaBuilder.asc(slot.get("slotId"));
+    Order parkingFloorOrder = criteriaBuilder.asc(slot.get(Slot_.PARKING_FLOOR));
+    Order slotOrder = criteriaBuilder.asc(slot.get(Slot_.SLOT_ID));
 
     // wire the clauses to the query
     query.where(parkingLotPredicate, slotStatusPredicate, slotTypePredicate);

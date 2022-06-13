@@ -1,7 +1,9 @@
 package com.automated.parkinglot.repository.providers;
 
 import com.automated.parkinglot.models.enums.SlotStatus;
+import com.automated.parkinglot.models.parking.ParkingFloor_;
 import com.automated.parkinglot.models.parking.Slot;
+import com.automated.parkinglot.models.parking.Slot_;
 import com.automated.parkinglot.repository.SlotRepository;
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 import org.springframework.stereotype.Repository;
@@ -34,7 +36,7 @@ public class JpaSlotRepository extends SimpleJpaRepository<Slot, Integer>
 
     // where clause
     Predicate parkingFloorPredicate =
-        criteriaBuilder.equal(slot.get("parkingFloor").get("parkingFloorId"), parkingFloorId);
+        criteriaBuilder.equal(slot.get(Slot_.PARKING_FLOOR).get(ParkingFloor_.PARKING_FLOOR_ID), parkingFloorId);
 
     // wire predicate to query
     query.where(parkingFloorPredicate);
@@ -48,7 +50,7 @@ public class JpaSlotRepository extends SimpleJpaRepository<Slot, Integer>
     Root<Slot> slot = query.from(Slot.class);
 
     // where clause
-    Predicate namePredicate = criteriaBuilder.equal(slot.get("name"), name);
+    Predicate namePredicate = criteriaBuilder.equal(slot.get(Slot_.NAME), name);
 
     // wire predicate to query
     query.where(namePredicate);
@@ -63,11 +65,11 @@ public class JpaSlotRepository extends SimpleJpaRepository<Slot, Integer>
 
     // where clause
     Predicate parkingLotPredicate =
-        criteriaBuilder.equal(slot.get("parkingFloor").get("parkingLot"), parkingLotId);
-    Predicate statusPredicate = criteriaBuilder.equal(slot.get("slotStatus"), status);
+        criteriaBuilder.equal(slot.get(Slot_.PARKING_FLOOR).get(ParkingFloor_.PARKING_LOT), parkingLotId);
+    Predicate statusPredicate = criteriaBuilder.equal(slot.get(Slot_.SLOT_STATUS), status);
 
     // order clause
-    Order nameOrderAsc = criteriaBuilder.asc(slot.get("name"));
+    Order nameOrderAsc = criteriaBuilder.asc(slot.get(Slot_.NAME));
 
     // wire clauses to query
     query.where(parkingLotPredicate, statusPredicate);

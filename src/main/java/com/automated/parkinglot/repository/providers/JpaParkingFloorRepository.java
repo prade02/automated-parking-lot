@@ -1,6 +1,7 @@
 package com.automated.parkinglot.repository.providers;
 
 import com.automated.parkinglot.models.parking.ParkingFloor;
+import com.automated.parkinglot.models.parking.ParkingFloor_;
 import com.automated.parkinglot.repository.ParkingFloorRepository;
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 import org.springframework.stereotype.Repository;
@@ -30,7 +31,7 @@ public class JpaParkingFloorRepository extends SimpleJpaRepository<ParkingFloor,
     Root<ParkingFloor> parkingFloor = query.from(ParkingFloor.class);
 
     // where clause
-    Predicate parkingLotIdPredicate = criteriaBuilder.equal(parkingFloor.get("parkingLot"), parkingLotId);
+    Predicate parkingLotIdPredicate = criteriaBuilder.equal(parkingFloor.get(ParkingFloor_.PARKING_LOT), parkingLotId);
 
     // wire clause to query
     query.where(parkingLotIdPredicate);
