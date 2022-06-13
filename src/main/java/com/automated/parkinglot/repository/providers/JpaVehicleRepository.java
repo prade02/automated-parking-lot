@@ -1,6 +1,7 @@
 package com.automated.parkinglot.repository.providers;
 
 import com.automated.parkinglot.models.vehicle.Vehicle;
+import com.automated.parkinglot.models.vehicle.Vehicle_;
 import com.automated.parkinglot.repository.VehicleRepository;
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 import org.springframework.stereotype.Repository;
@@ -33,10 +34,10 @@ public class JpaVehicleRepository extends SimpleJpaRepository<Vehicle, Integer>
 
     // where clause
     Predicate registrationPredicate =
-        criteriaBuilder.equal(vehicle.get("registrationNumber"), registration);
+        criteriaBuilder.equal(vehicle.get(Vehicle_.REGISTRATION_NUMBER), registration);
 
     // order clause
-    Order inTimeOrderDesc = criteriaBuilder.desc(vehicle.get("inTime"));
+    Order inTimeOrderDesc = criteriaBuilder.desc(vehicle.get(Vehicle_.IN_TIME));
 
     // wire clause to query
     query.where(registrationPredicate);
