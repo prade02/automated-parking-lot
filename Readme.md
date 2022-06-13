@@ -1,3 +1,7 @@
+Version 6.0
+
+    1. Add JPA Specifications
+
 Version 5.0
 
     1. Add JPA meta model classes for type-safety
