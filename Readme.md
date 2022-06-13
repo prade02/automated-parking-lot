@@ -1,3 +1,7 @@
+Version 5.0
+
+    1. Add JPA meta model classes for type-safety
+
 Version 4.0
 
     1. API is not secured
