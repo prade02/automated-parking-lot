@@ -20,6 +20,7 @@ public class SlotBookingController {
       @PathVariable int parkingLot,
       @PathVariable String vehicleRegistration,
       @PathVariable GenericType slotType) {
+    // TODO: check if this vehicle has any open entry before booking slot and add relevant unit tests
     return slotBookingService.bookSlot(parkingLot, vehicleRegistration, slotType);
   }
 }

@@ -9,72 +9,39 @@ import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Order;
-import javax.persistence.criteria.Root;
 import java.util.Optional;
 
 @Repository
 public class JpaSlotRepository extends SimpleJpaRepository<Slot, Integer>
     implements SlotRepository {
 
-  private final EntityManager entityManager;
-  private final CriteriaBuilder criteriaBuilder;
-
   public JpaSlotRepository(EntityManager entityManager) {
     super(Slot.class, entityManager);
-    this.entityManager = entityManager;
-    this.criteriaBuilder = this.entityManager.getCriteriaBuilder();
   }
 
   @Override
   public Iterable<Slot> findAllSlotsByParkingFloor(int parkingFloorId) {
-    CriteriaQuery<Slot> query = criteriaBuilder.createQuery(Slot.class);
-    Root<Slot> slot = query.from(Slot.class);
-
-    // where clause
-    Predicate parkingFloorPredicate =
-        criteriaBuilder.equal(slot.get(Slot_.PARKING_FLOOR).get(ParkingFloor_.PARKING_FLOOR_ID), parkingFloorId);
-
-    // wire predicate to query
-    query.where(parkingFloorPredicate);
-
-    return entityManager.createQuery(query).getResultList();
+    return this.findAll(
+        (slot, query, builder) ->
+            builder.equal(
+                slot.get(Slot_.PARKING_FLOOR).get(ParkingFloor_.PARKING_FLOOR_ID), parkingFloorId));
   }
 
   @Override
   public Optional<Slot> findByName(String name) {
-    CriteriaQuery<Slot> query = criteriaBuilder.createQuery(Slot.class);
-    Root<Slot> slot = query.from(Slot.class);
-
-    // where clause
-    Predicate namePredicate = criteriaBuilder.equal(slot.get(Slot_.NAME), name);
-
-    // wire predicate to query
-    query.where(namePredicate);
-
-    return entityManager.createQuery(query).getResultStream().findFirst();
+    return this.findAll((slot, query, builder) -> builder.equal(slot.get(Slot_.NAME), name))
+        .stream()
+        .findFirst();
   }
 
   @Override
   public Iterable<Slot> getAllSlotsForStatus(SlotStatus status, int parkingLotId) {
-    CriteriaQuery<Slot> query = criteriaBuilder.createQuery(Slot.class);
-    Root<Slot> slot = query.from(Slot.class);
-
-    // where clause
-    Predicate parkingLotPredicate =
-        criteriaBuilder.equal(slot.get(Slot_.PARKING_FLOOR).get(ParkingFloor_.PARKING_LOT), parkingLotId);
-    Predicate statusPredicate = criteriaBuilder.equal(slot.get(Slot_.SLOT_STATUS), status);
-
-    // order clause
-    Order nameOrderAsc = criteriaBuilder.asc(slot.get(Slot_.NAME));
-
-    // wire clauses to query
-    query.where(parkingLotPredicate, statusPredicate);
-    query.orderBy(nameOrderAsc);
-
-    return entityManager.createQuery(query).getResultList();
+    return this.findAll((slot, query, builder) -> {
+      Order nameOrderAsc = builder.asc(slot.get(Slot_.NAME));
+      query.orderBy(nameOrderAsc);
+      return builder.and(builder.equal(slot.get(Slot_.SLOT_STATUS), status), builder.equal(
+              slot.get(Slot_.PARKING_FLOOR).get(ParkingFloor_.PARKING_LOT), parkingLotId));
+    });
   }
 }
