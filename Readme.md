@@ -5,6 +5,7 @@ Version 7.0
         a. using Fake DB authentication - In memory user account
         b. using basic auth
         c. using custom UserDetailsService
+        d. disabled CSRF
 
 Version 6.0
 
