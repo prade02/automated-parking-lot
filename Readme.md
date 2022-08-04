@@ -1,3 +1,11 @@
+Version 7.0
+
+    1. Banner added
+    2. Adding Spring Security:
+        a. using Fake DB authentication - In memory user account
+        b. using basic auth
+        c. using custom UserDetailsService
+
 Version 6.0
 
     1. Add JPA Specifications
