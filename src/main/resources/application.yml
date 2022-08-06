@@ -1,8 +1,7 @@
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/automated_parking_lot
-    username: root
-    password: password
+    url: jdbc:postgresql://localhost:5432/automated_parking_lot
+    username: postgres
   jackson:
     property-naming-strategy: SNAKE_CASE
 

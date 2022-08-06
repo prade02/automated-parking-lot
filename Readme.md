@@ -6,6 +6,8 @@ Version 7.0
         b. using basic auth
         c. using custom UserDetailsService
         d. disabled CSRF
+    3. Migrate to Postgresql
+    4. Version updated in Pom.xml
 
 Version 6.0
 
