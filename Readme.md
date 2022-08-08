@@ -8,6 +8,7 @@ Version 7.0
         d. disabled CSRF
     3. Migrate to Postgresql
     4. Version updated in Pom.xml
+    5. Added a maven property for spring-boot version.
 
 Version 6.0
 
