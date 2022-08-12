@@ -1,6 +1,6 @@
 package com.automated.parkinglot.service;
 
-import com.automated.parkinglot.models.parking.ParkingLot;
+import com.automated.parkinglot.models.application.parking.ParkingLot;
 
 import java.util.List;
 

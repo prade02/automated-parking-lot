@@ -1,10 +1,10 @@
 package com.automated.parkinglot.service;
 
 import com.automated.parkinglot.exception.InvalidRequestException;
-import com.automated.parkinglot.models.enums.GenericType;
-import com.automated.parkinglot.models.enums.SlotStatus;
-import com.automated.parkinglot.models.parking.Slot;
-import com.automated.parkinglot.models.vehicle.Vehicle;
+import com.automated.parkinglot.models.application.enums.GenericType;
+import com.automated.parkinglot.models.application.enums.SlotStatus;
+import com.automated.parkinglot.models.application.parking.Slot;
+import com.automated.parkinglot.models.application.vehicle.Vehicle;
 import com.automated.parkinglot.repository.application.SlotRepository;
 import com.automated.parkinglot.repository.application.VehicleRepository;
 import lombok.AllArgsConstructor;

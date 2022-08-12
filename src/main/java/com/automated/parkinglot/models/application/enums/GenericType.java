@@ -1,4 +1,4 @@
-package com.automated.parkinglot.models.enums;
+package com.automated.parkinglot.models.application.enums;
 
 public enum GenericType {
     BIKE,

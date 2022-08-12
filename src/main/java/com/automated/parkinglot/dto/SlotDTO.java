@@ -1,7 +1,7 @@
 package com.automated.parkinglot.dto;
 
-import com.automated.parkinglot.models.enums.GenericType;
-import com.automated.parkinglot.models.enums.SlotStatus;
+import com.automated.parkinglot.models.application.enums.GenericType;
+import com.automated.parkinglot.models.application.enums.SlotStatus;
 import lombok.Getter;
 
 @Getter

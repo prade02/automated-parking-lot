@@ -1,7 +1,7 @@
 package com.automated.parkinglot.repository.application;
 
-import com.automated.parkinglot.models.enums.SlotStatus;
-import com.automated.parkinglot.models.parking.Slot;
+import com.automated.parkinglot.models.application.enums.SlotStatus;
+import com.automated.parkinglot.models.application.parking.Slot;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.NoRepositoryBean;
 
