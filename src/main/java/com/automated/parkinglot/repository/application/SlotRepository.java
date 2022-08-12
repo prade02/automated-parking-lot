@@ -1,4 +1,4 @@
-package com.automated.parkinglot.repository;
+package com.automated.parkinglot.repository.application;
 
 import com.automated.parkinglot.models.enums.SlotStatus;
 import com.automated.parkinglot.models.parking.Slot;

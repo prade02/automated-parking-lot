@@ -1,4 +1,4 @@
-package com.automated.parkinglot.repository;
+package com.automated.parkinglot.repository.application;
 
 import com.automated.parkinglot.models.parking.ParkingFloor;
 import org.springframework.data.jpa.repository.JpaRepository;

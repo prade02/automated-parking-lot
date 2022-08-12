@@ -1,10 +1,10 @@
-package com.automated.parkinglot.repository.providers;
+package com.automated.parkinglot.repository.application.providers;
 
 import com.automated.parkinglot.models.enums.SlotStatus;
 import com.automated.parkinglot.models.parking.ParkingFloor_;
 import com.automated.parkinglot.models.parking.Slot;
 import com.automated.parkinglot.models.parking.Slot_;
-import com.automated.parkinglot.repository.SlotRepository;
+import com.automated.parkinglot.repository.application.SlotRepository;
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 import org.springframework.stereotype.Repository;
 
