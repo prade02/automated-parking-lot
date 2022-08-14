@@ -1,4 +1,4 @@
-package com.automated.parkinglot.configuration.datasource;
+package com.automated.parkinglot.configuration.datasource.auth;
 
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
@@ -6,7 +6,6 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.orm.jpa.EntityManagerFactoryBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
@@ -19,37 +18,34 @@ import javax.sql.DataSource;
 @Configuration
 @EnableTransactionManagement
 @EnableJpaRepositories(
-    entityManagerFactoryRef = "applicationEntityManagerFactory",
-    transactionManagerRef = "applicationTransactionManager",
-    basePackages = "com.automated.parkinglot.repository.application")
-public class ApplicationDataSourceConfiguration {
+    entityManagerFactoryRef = "authServiceEntityManagerFactory",
+    transactionManagerRef = "authServiceTransactionManager",
+    basePackages = "com.automated.parkinglot.repository.auth")
+public class AuthServiceDataSourceConfiguration {
 
-  @Bean(name = "applicationDataSourceProperties")
-  @ConfigurationProperties(prefix = "spring.datasource.application")
+  @Bean(name = "authServiceDataSourceProperties")
+  @ConfigurationProperties(prefix = "spring.datasource.auth")
   public DataSourceProperties dataSourceProperties() {
     return new DataSourceProperties();
   }
 
-  @Primary
-  @Bean(name = "applicationDataSource")
+  @Bean(name = "authServiceDataSource")
   public DataSource dataSource() {
     return dataSourceProperties().initializeDataSourceBuilder().build();
   }
 
-  @Primary
-  @Bean(name = "applicationEntityManagerFactory")
+  @Bean(name = "authServiceEntityManagerFactory")
   public LocalContainerEntityManagerFactoryBean entityManagerFactory(
       EntityManagerFactoryBuilder entityManagerFactoryBuilder) {
     return entityManagerFactoryBuilder
         .dataSource(dataSource())
-        .packages("com.automated.parkinglot.models.application")
+        .packages("com.automated.parkinglot.models.auth")
         .build();
   }
 
-  @Primary
-  @Bean(name = "applicationTransactionManager")
+  @Bean(name = "authServiceTransactionManager")
   public TransactionManager transactionManager(
-          @Qualifier("applicationEntityManagerFactory")EntityManagerFactory entityManagerFactory) {
+      @Qualifier("authServiceEntityManagerFactory") EntityManagerFactory entityManagerFactory) {
     return new JpaTransactionManager(entityManagerFactory);
   }
 }
