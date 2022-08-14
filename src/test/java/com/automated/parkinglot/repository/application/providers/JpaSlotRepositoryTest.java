@@ -1,11 +1,11 @@
-package com.automated.parkinglot.repository.providers;
+package com.automated.parkinglot.repository.application.providers;
 
-import com.automated.parkinglot.models.enums.GenericType;
-import com.automated.parkinglot.models.enums.SlotStatus;
-import com.automated.parkinglot.models.parking.ParkingFloor;
-import com.automated.parkinglot.models.parking.ParkingLot;
-import com.automated.parkinglot.models.parking.Slot;
-import com.automated.parkinglot.repository.ParkingLotRepository;
+import com.automated.parkinglot.models.application.enums.GenericType;
+import com.automated.parkinglot.models.application.enums.SlotStatus;
+import com.automated.parkinglot.models.application.parking.ParkingFloor;
+import com.automated.parkinglot.models.application.parking.ParkingLot;
+import com.automated.parkinglot.models.application.parking.Slot;
+import com.automated.parkinglot.repository.application.ParkingLotRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

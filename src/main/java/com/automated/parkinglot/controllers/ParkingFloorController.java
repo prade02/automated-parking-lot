@@ -1,7 +1,7 @@
 package com.automated.parkinglot.controllers;
 
 import com.automated.parkinglot.dto.ParkingFloorDTO;
-import com.automated.parkinglot.models.parking.ParkingFloor;
+import com.automated.parkinglot.models.application.parking.ParkingFloor;
 import com.automated.parkinglot.service.IParkingFloorService;
 import com.automated.parkinglot.service.IParkingLotService;
 import lombok.AllArgsConstructor;

@@ -1,7 +1,7 @@
-package com.automated.parkinglot.models.vehicle;
+package com.automated.parkinglot.models.application.vehicle;
 
-import com.automated.parkinglot.models.enums.GenericType;
-import com.automated.parkinglot.models.parking.Slot;
+import com.automated.parkinglot.models.application.enums.GenericType;
+import com.automated.parkinglot.models.application.parking.Slot;
 import lombok.*;
 
 import javax.persistence.*;

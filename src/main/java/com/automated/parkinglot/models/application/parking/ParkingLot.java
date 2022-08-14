@@ -1,4 +1,4 @@
-package com.automated.parkinglot.models.parking;
+package com.automated.parkinglot.models.application.parking;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

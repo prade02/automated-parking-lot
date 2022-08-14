@@ -1,8 +1,8 @@
-package com.automated.parkinglot.repository.providers;
+package com.automated.parkinglot.repository.application.providers;
 
-import com.automated.parkinglot.models.parking.ParkingFloor;
-import com.automated.parkinglot.models.parking.ParkingFloor_;
-import com.automated.parkinglot.repository.ParkingFloorRepository;
+import com.automated.parkinglot.models.application.parking.ParkingFloor;
+import com.automated.parkinglot.models.application.parking.ParkingFloor_;
+import com.automated.parkinglot.repository.application.ParkingFloorRepository;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 import org.springframework.stereotype.Repository;

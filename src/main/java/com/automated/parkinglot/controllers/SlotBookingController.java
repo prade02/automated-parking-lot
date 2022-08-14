@@ -1,6 +1,6 @@
 package com.automated.parkinglot.controllers;
 
-import com.automated.parkinglot.models.enums.GenericType;
+import com.automated.parkinglot.models.application.enums.GenericType;
 import com.automated.parkinglot.service.ISlotBookingService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;

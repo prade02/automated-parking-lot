@@ -1,9 +1,20 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/automated_parking_lot
-    username: postgres
+    application:
+      url: jdbc:postgresql://localhost:5432/automated_parking_lot
+      username: postgres
+      driverClassName: org.postgresql.Driver
+    auth:
+      url: jdbc:postgresql://localhost:5432/auth_service
+      username: postgres
+      driverClassName: org.postgresql.Driver
   jackson:
     property-naming-strategy: SNAKE_CASE
+  jpa:
+    properties:
+      hibernate:
+        implicit_naming_strategy: org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy
+        physical_naming_strategy: org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy
 
 slot:
   booking:

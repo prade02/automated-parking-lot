@@ -1,8 +1,8 @@
 package com.automated.parkinglot.service;
 
 import com.automated.parkinglot.exception.InvalidRequestException;
-import com.automated.parkinglot.models.parking.ParkingLot;
-import com.automated.parkinglot.repository.ParkingLotRepository;
+import com.automated.parkinglot.models.application.parking.ParkingLot;
+import com.automated.parkinglot.repository.application.ParkingLotRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 

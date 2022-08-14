@@ -1,8 +1,8 @@
-package com.automated.parkinglot.repository.providers;
+package com.automated.parkinglot.repository.application.providers;
 
-import com.automated.parkinglot.models.vehicle.Vehicle;
-import com.automated.parkinglot.models.vehicle.Vehicle_;
-import com.automated.parkinglot.repository.VehicleRepository;
+import com.automated.parkinglot.models.application.vehicle.Vehicle;
+import com.automated.parkinglot.models.application.vehicle.Vehicle_;
+import com.automated.parkinglot.repository.application.VehicleRepository;
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 import org.springframework.stereotype.Repository;
 
