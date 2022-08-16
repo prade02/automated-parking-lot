@@ -12,7 +12,7 @@ public class AuthService implements IAuthService {
     private final AuthServiceRepository authServiceRepository;
 
     @Override
-    public RoleHierarchy getRoleHierarchyExpression() {
+    public RoleHierarchy getRoleHierarchy() {
         return authServiceRepository.getRoleHierarchyExpression();
     }
 }
