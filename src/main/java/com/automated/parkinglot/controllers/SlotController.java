@@ -23,6 +23,8 @@ public class SlotController {
   private final IParkingFloorService parkingFloorService;
   private final ModelMapper modelMapper;
 
+  // TODO: batch get operation for all api's
+
   @GetMapping("all/{parkingFloorId}")
   public List<SlotDTO> getAllSlots(@PathVariable int parkingFloorId) {
     return slotService.getAllSlotsForFloor(parkingFloorId).stream()
