@@ -1,3 +1,11 @@
+Version 8.0
+
+    1. Added JWT filter(interceptor) which parses the JWT token present in the header
+    2. Added custom AccessDecisionManager with only WebExpressionVoter as the Voter.
+    3. Added multi datasource configuration
+        a. parking lot DB
+        b. auth service DB
+
 Version 7.0
 
     1. Banner added
