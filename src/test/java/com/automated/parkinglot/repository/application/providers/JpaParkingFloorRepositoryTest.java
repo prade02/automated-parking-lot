@@ -20,75 +20,76 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 @Import(JpaParkingFloorRepository.class)
 class JpaParkingFloorRepositoryTest {
 
-  @Autowired private ParkingLotRepository parkingLotRepository;
-  @Autowired private JpaParkingFloorRepository jpaParkingFloorRepository;
+    private static final String PARKING_LOT_NAME_ONE = "LOT1_1";
+    private static final String PARKING_LOT_NAME_TWO = "LOT1_2";
+    private static final String PARKING_LOT_NAME_THREE = "LOT1_3";
+    @Autowired
+    private ParkingLotRepository parkingLotRepository;
+    @Autowired
+    private JpaParkingFloorRepository jpaParkingFloorRepository;
+    private ParkingLot parkingLot;
 
-  private ParkingLot parkingLot;
-  private static final String PARKING_LOT_NAME_ONE = "LOT1_1";
-  private static final String PARKING_LOT_NAME_TWO = "LOT1_2";
-  private static final String PARKING_LOT_NAME_THREE = "LOT1_3";
+    @BeforeEach
+    void setUp() {
+        // given
+        var parkingLot = new ParkingLot();
+        var parkingFloorOne =
+                ParkingFloor.builder().parkingLot(parkingLot).name(PARKING_LOT_NAME_ONE).build();
+        var parkingFloorTwo =
+                ParkingFloor.builder().parkingLot(parkingLot).name(PARKING_LOT_NAME_TWO).build();
+        var parkingFloorThree =
+                ParkingFloor.builder().parkingLot(parkingLot).name(PARKING_LOT_NAME_THREE).build();
 
-  @BeforeEach
-  void setUp() {
-    // given
-    var parkingLot = new ParkingLot();
-    var parkingFloorOne =
-        ParkingFloor.builder().parkingLot(parkingLot).name(PARKING_LOT_NAME_ONE).build();
-    var parkingFloorTwo =
-        ParkingFloor.builder().parkingLot(parkingLot).name(PARKING_LOT_NAME_TWO).build();
-    var parkingFloorThree =
-        ParkingFloor.builder().parkingLot(parkingLot).name(PARKING_LOT_NAME_THREE).build();
+        this.parkingLot = parkingLotRepository.save(parkingLot);
+        jpaParkingFloorRepository.save(parkingFloorOne);
+        jpaParkingFloorRepository.save(parkingFloorTwo);
+        jpaParkingFloorRepository.save(parkingFloorThree);
+    }
 
-    this.parkingLot = parkingLotRepository.save(parkingLot);
-    jpaParkingFloorRepository.save(parkingFloorOne);
-    jpaParkingFloorRepository.save(parkingFloorTwo);
-    jpaParkingFloorRepository.save(parkingFloorThree);
-  }
+    @Test
+    void getAllParkingFloorsByParkingLot_WhenMultipleFloorsAvailable() {
+        // when
+        Iterable<ParkingFloor> allParkingFloorsByParkingLot =
+                jpaParkingFloorRepository.getAllParkingFloorsByParkingLot(
+                        this.parkingLot.getParkingLotId());
 
-  @Test
-  void getAllParkingFloorsByParkingLot_WhenMultipleFloorsAvailable() {
-    // when
-    Iterable<ParkingFloor> allParkingFloorsByParkingLot =
-        jpaParkingFloorRepository.getAllParkingFloorsByParkingLot(
-            this.parkingLot.getParkingLotId());
+        // then
+        assertThat(allParkingFloorsByParkingLot).isNotNull();
+        long countOfFloors =
+                StreamSupport.stream(allParkingFloorsByParkingLot.spliterator(), false).count();
+        assertThat(countOfFloors).isGreaterThan(0);
+    }
 
-    // then
-    assertThat(allParkingFloorsByParkingLot).isNotNull();
-    long countOfFloors =
-        StreamSupport.stream(allParkingFloorsByParkingLot.spliterator(), false).count();
-    assertThat(countOfFloors).isGreaterThan(0);
-  }
+    @Test
+    void getAllParkingFloorsByParkingLot_WhenNoFloorsAvailable() {
+        // given
+        jpaParkingFloorRepository.deleteAll();
 
-  @Test
-  void getAllParkingFloorsByParkingLot_WhenNoFloorsAvailable() {
-    // given
-    jpaParkingFloorRepository.deleteAll();
+        // when
+        Iterable<ParkingFloor> allParkingFloorsByParkingLot =
+                jpaParkingFloorRepository.getAllParkingFloorsByParkingLot(
+                        this.parkingLot.getParkingLotId());
 
-    // when
-    Iterable<ParkingFloor> allParkingFloorsByParkingLot =
-        jpaParkingFloorRepository.getAllParkingFloorsByParkingLot(
-            this.parkingLot.getParkingLotId());
+        // then
+        assertThat(allParkingFloorsByParkingLot).isNotNull();
+        long countOfFloors =
+                StreamSupport.stream(allParkingFloorsByParkingLot.spliterator(), false).count();
+        assertThat(countOfFloors).isEqualTo(0);
+    }
 
-    // then
-    assertThat(allParkingFloorsByParkingLot).isNotNull();
-    long countOfFloors =
-        StreamSupport.stream(allParkingFloorsByParkingLot.spliterator(), false).count();
-    assertThat(countOfFloors).isEqualTo(0);
-  }
+    @Test
+    void getAllParkingFloorsByParkingLot_ForInvalidParkingLot() {
+        // given
+        int parkingLot = 0;
 
-  @Test
-  void getAllParkingFloorsByParkingLot_ForInvalidParkingLot() {
-    // given
-    int parkingLot = 0;
+        // when
+        Iterable<ParkingFloor> allParkingFloorsByParkingLot =
+                jpaParkingFloorRepository.getAllParkingFloorsByParkingLot(parkingLot);
 
-    // when
-    Iterable<ParkingFloor> allParkingFloorsByParkingLot =
-        jpaParkingFloorRepository.getAllParkingFloorsByParkingLot(parkingLot);
-
-    // then
-    assertThat(allParkingFloorsByParkingLot).isNotNull();
-    long countOfFloors =
-        StreamSupport.stream(allParkingFloorsByParkingLot.spliterator(), false).count();
-    assertThat(countOfFloors).isEqualTo(0);
-  }
+        // then
+        assertThat(allParkingFloorsByParkingLot).isNotNull();
+        long countOfFloors =
+                StreamSupport.stream(allParkingFloorsByParkingLot.spliterator(), false).count();
+        assertThat(countOfFloors).isEqualTo(0);
+    }
 }

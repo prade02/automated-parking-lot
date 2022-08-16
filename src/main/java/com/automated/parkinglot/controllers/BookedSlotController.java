@@ -12,15 +12,15 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("api/v1/booked-slot")
 public class BookedSlotController {
 
-  private final IBookedSlotService bookedSlotService;
+    private final IBookedSlotService bookedSlotService;
 
-  @GetMapping("release/{registrationNumber}")
-  public double releaseSlot(@PathVariable String registrationNumber) {
-    return bookedSlotService.releaseSlotAndGetFeeInRupees(registrationNumber);
-  }
+    @GetMapping("release/{registrationNumber}")
+    public double releaseSlot(@PathVariable String registrationNumber) {
+        return bookedSlotService.releaseSlotAndGetFeeInRupees(registrationNumber);
+    }
 
-  @GetMapping("amount/{registrationNumber}")
-  public double getAmountTillNow(@PathVariable String registrationNumber) {
-    return bookedSlotService.getParkingFee(registrationNumber);
-  }
+    @GetMapping("amount/{registrationNumber}")
+    public double getAmountTillNow(@PathVariable String registrationNumber) {
+        return bookedSlotService.getParkingFee(registrationNumber);
+    }
 }

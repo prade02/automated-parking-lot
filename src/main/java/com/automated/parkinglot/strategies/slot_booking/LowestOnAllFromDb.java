@@ -11,40 +11,36 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.LockModeType;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Order;
-import javax.persistence.criteria.Root;
+import javax.persistence.criteria.*;
 
 @Repository
 @AllArgsConstructor
 public class LowestOnAllFromDb implements SlotBookingStrategy {
 
-  private final EntityManager entityManager;
+    private final EntityManager entityManager;
 
-  @Override
-  @Lock(LockModeType.PESSIMISTIC_READ)
-  public Slot bookSlot(int parkingLotId, GenericType slotType) {
-    CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
-    CriteriaQuery<Slot> query = criteriaBuilder.createQuery(Slot.class);
-    Root<Slot> slot = query.from(Slot.class);
+    @Override
+    @Lock(LockModeType.PESSIMISTIC_READ)
+    public Slot bookSlot(int parkingLotId, GenericType slotType) {
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Slot> query = criteriaBuilder.createQuery(Slot.class);
+        Root<Slot> slot = query.from(Slot.class);
 
-    // set predicates/conditions - where clause
-    Predicate parkingLotPredicate =
-        criteriaBuilder.equal(slot.get(Slot_.PARKING_FLOOR).get(ParkingFloor_.PARKING_LOT), parkingLotId);
-    Predicate slotStatusPredicate =
-        criteriaBuilder.equal(slot.get(Slot_.SLOT_STATUS), SlotStatus.VACANT);
-    Predicate slotTypePredicate = criteriaBuilder.equal(slot.get(Slot_.SLOT_TYPE), slotType);
+        // set predicates/conditions - where clause
+        Predicate parkingLotPredicate =
+                criteriaBuilder.equal(slot.get(Slot_.PARKING_FLOOR).get(ParkingFloor_.PARKING_LOT), parkingLotId);
+        Predicate slotStatusPredicate =
+                criteriaBuilder.equal(slot.get(Slot_.SLOT_STATUS), SlotStatus.VACANT);
+        Predicate slotTypePredicate = criteriaBuilder.equal(slot.get(Slot_.SLOT_TYPE), slotType);
 
-    // set order by clause
-    Order parkingFloorOrder = criteriaBuilder.asc(slot.get(Slot_.PARKING_FLOOR));
-    Order slotOrder = criteriaBuilder.asc(slot.get(Slot_.SLOT_ID));
+        // set order by clause
+        Order parkingFloorOrder = criteriaBuilder.asc(slot.get(Slot_.PARKING_FLOOR));
+        Order slotOrder = criteriaBuilder.asc(slot.get(Slot_.SLOT_ID));
 
-    // wire the clauses to the query
-    query.where(parkingLotPredicate, slotStatusPredicate, slotTypePredicate);
-    query.orderBy(parkingFloorOrder, slotOrder);
+        // wire the clauses to the query
+        query.where(parkingLotPredicate, slotStatusPredicate, slotTypePredicate);
+        query.orderBy(parkingFloorOrder, slotOrder);
 
-    return entityManager.createQuery(query).getResultStream().findFirst().orElse(null);
-  }
+        return entityManager.createQuery(query).getResultStream().findFirst().orElse(null);
+    }
 }

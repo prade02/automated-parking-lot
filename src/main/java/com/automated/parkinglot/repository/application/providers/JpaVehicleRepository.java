@@ -12,21 +12,21 @@ import java.util.Optional;
 
 @Repository
 public class JpaVehicleRepository extends SimpleJpaRepository<Vehicle, Integer>
-    implements VehicleRepository {
+        implements VehicleRepository {
 
-  public JpaVehicleRepository(EntityManager entityManager) {
-    super(Vehicle.class, entityManager);
-  }
+    public JpaVehicleRepository(EntityManager entityManager) {
+        super(Vehicle.class, entityManager);
+    }
 
-  @Override
-  public Optional<Vehicle> findLatestVehicleEntry(String registration) {
-    return this.findAll(
-            (vehicle, query, builder) -> {
-              Order inTimeOrderDesc = builder.desc(vehicle.get(Vehicle_.IN_TIME));
-              query.orderBy(inTimeOrderDesc);
-              return builder.equal(vehicle.get(Vehicle_.REGISTRATION_NUMBER), registration);
-            })
-        .stream()
-        .findFirst();
-  }
+    @Override
+    public Optional<Vehicle> findLatestVehicleEntry(String registration) {
+        return this.findAll(
+                        (vehicle, query, builder) -> {
+                            Order inTimeOrderDesc = builder.desc(vehicle.get(Vehicle_.IN_TIME));
+                            query.orderBy(inTimeOrderDesc);
+                            return builder.equal(vehicle.get(Vehicle_.REGISTRATION_NUMBER), registration);
+                        })
+                .stream()
+                .findFirst();
+    }
 }

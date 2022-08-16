@@ -7,8 +7,8 @@ import lombok.Getter;
 @Getter
 public class SlotDTO {
 
-  private int slotId;
-  private String name;
-  private GenericType slotType;
-  private SlotStatus slotStatus;
+    private int slotId;
+    private String name;
+    private GenericType slotType;
+    private SlotStatus slotStatus;
 }

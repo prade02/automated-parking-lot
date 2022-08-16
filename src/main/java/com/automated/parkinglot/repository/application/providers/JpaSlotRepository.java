@@ -14,34 +14,34 @@ import java.util.Optional;
 
 @Repository
 public class JpaSlotRepository extends SimpleJpaRepository<Slot, Integer>
-    implements SlotRepository {
+        implements SlotRepository {
 
-  public JpaSlotRepository(EntityManager entityManager) {
-    super(Slot.class, entityManager);
-  }
+    public JpaSlotRepository(EntityManager entityManager) {
+        super(Slot.class, entityManager);
+    }
 
-  @Override
-  public Iterable<Slot> findAllSlotsByParkingFloor(int parkingFloorId) {
-    return this.findAll(
-        (slot, query, builder) ->
-            builder.equal(
-                slot.get(Slot_.PARKING_FLOOR).get(ParkingFloor_.PARKING_FLOOR_ID), parkingFloorId));
-  }
+    @Override
+    public Iterable<Slot> findAllSlotsByParkingFloor(int parkingFloorId) {
+        return this.findAll(
+                (slot, query, builder) ->
+                        builder.equal(
+                                slot.get(Slot_.PARKING_FLOOR).get(ParkingFloor_.PARKING_FLOOR_ID), parkingFloorId));
+    }
 
-  @Override
-  public Optional<Slot> findByName(String name) {
-    return this.findAll((slot, query, builder) -> builder.equal(slot.get(Slot_.NAME), name))
-        .stream()
-        .findFirst();
-  }
+    @Override
+    public Optional<Slot> findByName(String name) {
+        return this.findAll((slot, query, builder) -> builder.equal(slot.get(Slot_.NAME), name))
+                .stream()
+                .findFirst();
+    }
 
-  @Override
-  public Iterable<Slot> getAllSlotsForStatus(SlotStatus status, int parkingLotId) {
-    return this.findAll((slot, query, builder) -> {
-      Order nameOrderAsc = builder.asc(slot.get(Slot_.NAME));
-      query.orderBy(nameOrderAsc);
-      return builder.and(builder.equal(slot.get(Slot_.SLOT_STATUS), status), builder.equal(
-              slot.get(Slot_.PARKING_FLOOR).get(ParkingFloor_.PARKING_LOT), parkingLotId));
-    });
-  }
+    @Override
+    public Iterable<Slot> getAllSlotsForStatus(SlotStatus status, int parkingLotId) {
+        return this.findAll((slot, query, builder) -> {
+            Order nameOrderAsc = builder.asc(slot.get(Slot_.NAME));
+            query.orderBy(nameOrderAsc);
+            return builder.and(builder.equal(slot.get(Slot_.SLOT_STATUS), status), builder.equal(
+                    slot.get(Slot_.PARKING_FLOOR).get(ParkingFloor_.PARKING_LOT), parkingLotId));
+        });
+    }
 }

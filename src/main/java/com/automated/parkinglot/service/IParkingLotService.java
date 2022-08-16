@@ -5,13 +5,13 @@ import com.automated.parkinglot.models.application.parking.ParkingLot;
 import java.util.List;
 
 public interface IParkingLotService {
-  List<ParkingLot> getAllParkingLots();
+    List<ParkingLot> getAllParkingLots();
 
-  ParkingLot getParkingLot(int id);
+    ParkingLot getParkingLot(int id);
 
-  ParkingLot addNewParkingLot(ParkingLot parkingLot);
+    ParkingLot addNewParkingLot(ParkingLot parkingLot);
 
-  ParkingLot updateParkingLot(ParkingLot parkingLot);
+    ParkingLot updateParkingLot(ParkingLot parkingLot);
 
-  void deleteParkingLot(int id);
+    void deleteParkingLot(int id);
 }

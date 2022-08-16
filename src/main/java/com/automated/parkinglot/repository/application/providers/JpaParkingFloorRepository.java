@@ -11,19 +11,19 @@ import javax.persistence.EntityManager;
 
 @Repository
 public class JpaParkingFloorRepository extends SimpleJpaRepository<ParkingFloor, Integer>
-    implements ParkingFloorRepository {
+        implements ParkingFloorRepository {
 
-  public JpaParkingFloorRepository(EntityManager entityManager) {
-    super(ParkingFloor.class, entityManager);
-  }
+    public JpaParkingFloorRepository(EntityManager entityManager) {
+        super(ParkingFloor.class, entityManager);
+    }
 
-  @Override
-  public Iterable<ParkingFloor> getAllParkingFloorsByParkingLot(int parkingLotId) {
-    return this.findAll(floorsOnGivenLot(parkingLotId));
-  }
+    @Override
+    public Iterable<ParkingFloor> getAllParkingFloorsByParkingLot(int parkingLotId) {
+        return this.findAll(floorsOnGivenLot(parkingLotId));
+    }
 
-  private Specification<ParkingFloor> floorsOnGivenLot(int parkingLotId) {
-    return (parkingFloor, query, builder) ->
-        builder.equal(parkingFloor.get(ParkingFloor_.PARKING_LOT), parkingLotId);
-  }
+    private Specification<ParkingFloor> floorsOnGivenLot(int parkingLotId) {
+        return (parkingFloor, query, builder) ->
+                builder.equal(parkingFloor.get(ParkingFloor_.PARKING_LOT), parkingLotId);
+    }
 }

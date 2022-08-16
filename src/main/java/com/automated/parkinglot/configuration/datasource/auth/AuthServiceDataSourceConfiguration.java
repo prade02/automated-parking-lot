@@ -18,34 +18,34 @@ import javax.sql.DataSource;
 @Configuration
 @EnableTransactionManagement
 @EnableJpaRepositories(
-    entityManagerFactoryRef = "authServiceEntityManagerFactory",
-    transactionManagerRef = "authServiceTransactionManager",
-    basePackages = "com.automated.parkinglot.repository.auth")
+        entityManagerFactoryRef = "authServiceEntityManagerFactory",
+        transactionManagerRef = "authServiceTransactionManager",
+        basePackages = "com.automated.parkinglot.repository.auth")
 public class AuthServiceDataSourceConfiguration {
 
-  @Bean(name = "authServiceDataSourceProperties")
-  @ConfigurationProperties(prefix = "spring.datasource.auth")
-  public DataSourceProperties dataSourceProperties() {
-    return new DataSourceProperties();
-  }
+    @Bean(name = "authServiceDataSourceProperties")
+    @ConfigurationProperties(prefix = "spring.datasource.auth")
+    public DataSourceProperties dataSourceProperties() {
+        return new DataSourceProperties();
+    }
 
-  @Bean(name = "authServiceDataSource")
-  public DataSource dataSource() {
-    return dataSourceProperties().initializeDataSourceBuilder().build();
-  }
+    @Bean(name = "authServiceDataSource")
+    public DataSource dataSource() {
+        return dataSourceProperties().initializeDataSourceBuilder().build();
+    }
 
-  @Bean(name = "authServiceEntityManagerFactory")
-  public LocalContainerEntityManagerFactoryBean entityManagerFactory(
-      EntityManagerFactoryBuilder entityManagerFactoryBuilder) {
-    return entityManagerFactoryBuilder
-        .dataSource(dataSource())
-        .packages("com.automated.parkinglot.models.auth")
-        .build();
-  }
+    @Bean(name = "authServiceEntityManagerFactory")
+    public LocalContainerEntityManagerFactoryBean entityManagerFactory(
+            EntityManagerFactoryBuilder entityManagerFactoryBuilder) {
+        return entityManagerFactoryBuilder
+                .dataSource(dataSource())
+                .packages("com.automated.parkinglot.models.auth")
+                .build();
+    }
 
-  @Bean(name = "authServiceTransactionManager")
-  public TransactionManager transactionManager(
-      @Qualifier("authServiceEntityManagerFactory") EntityManagerFactory entityManagerFactory) {
-    return new JpaTransactionManager(entityManagerFactory);
-  }
+    @Bean(name = "authServiceTransactionManager")
+    public TransactionManager transactionManager(
+            @Qualifier("authServiceEntityManagerFactory") EntityManagerFactory entityManagerFactory) {
+        return new JpaTransactionManager(entityManagerFactory);
+    }
 }

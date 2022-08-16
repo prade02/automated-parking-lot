@@ -9,23 +9,23 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class ApplicationConfiguration {
 
-  @Bean
-  public ModelMapper modelMapper() {
-    ModelMapper modelMapper = new ModelMapper();
-    modelMapper
-        .getConfiguration()
-        .setFieldMatchingEnabled(true)
-        .setFieldAccessLevel(org.modelmapper.config.Configuration.AccessLevel.PRIVATE);
-    return modelMapper;
-  }
+    @Bean
+    public ModelMapper modelMapper() {
+        ModelMapper modelMapper = new ModelMapper();
+        modelMapper
+                .getConfiguration()
+                .setFieldMatchingEnabled(true)
+                .setFieldAccessLevel(org.modelmapper.config.Configuration.AccessLevel.PRIVATE);
+        return modelMapper;
+    }
 
-  @Bean
-  public WebMvcConfigurer webMvcConfigurer() {
-    return new WebMvcConfigurer() {
-      @Override
-      public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**").allowedOrigins("*");
-      }
-    };
-  }
+    @Bean
+    public WebMvcConfigurer webMvcConfigurer() {
+        return new WebMvcConfigurer() {
+            @Override
+            public void addCorsMappings(CorsRegistry registry) {
+                registry.addMapping("/**").allowedOrigins("*");
+            }
+        };
+    }
 }
