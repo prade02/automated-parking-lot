@@ -10,8 +10,8 @@ import com.automated.parkinglot.repository.application.VehicleRepository;
 import com.automated.parkinglot.strategies.slot_booking.SlotBookingStrategy;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
 import java.time.Instant;
 import java.util.Date;
 import java.util.Map;
@@ -34,6 +34,7 @@ public class SlotBookingService implements ISlotBookingService {
     }
 
     @Override
+    @Transactional
     public String bookSlot(
             final int parkingLotId, final String vehicleRegistration, final GenericType slotType) {
         final var slot = slotBookingStrategy.bookSlot(parkingLotId, slotType);
@@ -45,10 +46,9 @@ public class SlotBookingService implements ISlotBookingService {
         return slot.getName();
     }
 
-    @Transactional
     private void persistData(Vehicle vehicle, Slot slot) {
-        vehicleRepository.save(vehicle);
         slotRepository.save(slot);
+        vehicleRepository.save(vehicle);
     }
 
     private Vehicle getVehicle(String vehicleRegistration, GenericType vehicleType, Slot slot) {

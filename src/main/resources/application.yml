@@ -15,9 +15,26 @@ spring:
       hibernate:
         implicit_naming_strategy: org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy
         physical_naming_strategy: org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy
+        generate_statistics: ${PARKING_LOT_HBR_GENERATE_STATISTICS:true}
+        jdbc:
+          batch_size: ${PARKING_LOT_HBR_BATCH_SIZE:5}
+        order_inserts: ${PARKING_LOT_HBR_ORDER_INSERTS:true}
   autoconfigure:
     exclude: org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration
 
+logging:
+  level:
+    org:
+      springframework:
+        orm:
+          jpa:
+            JpaTransactionManager: ${PARKING_LOT_LOG_LEVEL_JPA_TXN_MANAGER:ERROR}
+      hibernate:
+        SQL: ${PARKING_LOT_LOG_LEVEL_HBR_SQL:DEBUG}
+        type:
+          descriptor:
+            sql:
+              BasicBinder: ${PARKING_LOT_LOG_LEVEL_HBR_STMT_PREPARED:TRACE}
 
 slot:
   booking:

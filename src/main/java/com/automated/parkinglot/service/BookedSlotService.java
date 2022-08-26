@@ -9,6 +9,7 @@ import com.automated.parkinglot.repository.application.SlotRepository;
 import com.automated.parkinglot.repository.application.VehicleRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
 import java.util.Date;
@@ -22,6 +23,7 @@ public class BookedSlotService implements IBookedSlotService {
     private final VehicleRepository vehicleRepository;
 
     @Override
+    @Transactional
     public double releaseSlotAndGetFeeInRupees(final String vehicleRegistration) {
         // get the vehicle from db and calculate the fee based on out time.
         final var vehicle = getVehicleInfo(vehicleRegistration);

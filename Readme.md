@@ -5,6 +5,9 @@ Version 8.0
     3. Added multi datasource configuration
         a. parking lot DB
         b. auth service DB
+    4. Added Transactional for BookedSlotService
+    5. Updated Transactional for SlotBookingService
+    6. Added: HBR SQL query logging, batch processing, JPA TXN MGMT logging, HBR basic binder, ordering inserts 
 
 Version 7.0
 
