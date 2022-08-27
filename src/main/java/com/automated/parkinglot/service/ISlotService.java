@@ -1,13 +1,13 @@
 package com.automated.parkinglot.service;
 
+import com.automated.parkinglot.dto.PagedContents;
 import com.automated.parkinglot.models.application.parking.Slot;
 
-import java.util.List;
 import java.util.Map;
 
 public interface ISlotService {
 
-    List<Slot> getAllSlotsForFloor(int parkingFloorId);
+    PagedContents<Slot> getAllSlotsForFloor(int parkingFloorId, int pageNumber, boolean setPageInfo);
 
     Slot getSlotById(int slotId);
 

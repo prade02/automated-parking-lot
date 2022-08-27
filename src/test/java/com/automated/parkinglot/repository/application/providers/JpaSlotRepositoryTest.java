@@ -24,9 +24,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 class JpaSlotRepositoryTest {
 
     private static final int SLOT_INITIAL_SIZE = 4;
+    private static final int SLOT_INITIAL_PAGE = 0;
     private static final int SLOT_VACANT_COUNT = 3;
     private static final int SLOT_OCCUPIED_COUNT = 1;
     private static final String SLOT_NAME_TO_FIND = "LOT1_1_2";
+    private static final boolean SLOT_SET_PAGE_INFO = false;
 
     @Autowired
     private JpaSlotRepository jpaSlotRepository;
@@ -78,11 +80,11 @@ class JpaSlotRepositoryTest {
     @Test
     void findAll_WhenMultipleSlotsPresent() {
         // when
-        var slots = jpaSlotRepository.findAllSlotsByParkingFloor(parkingFloor.getParkingFloorId());
+        var slots = jpaSlotRepository.findAllSlotsByParkingFloor(parkingFloor.getParkingFloorId(),
+                SLOT_INITIAL_PAGE, SLOT_INITIAL_SIZE, SLOT_SET_PAGE_INFO);
 
         // then
-        assertThat(StreamSupport.stream(slots.spliterator(), false).count())
-                .isEqualTo(SLOT_INITIAL_SIZE);
+        assertThat(slots.getContents().size()).isEqualTo(SLOT_INITIAL_SIZE);
     }
 
     @Test
@@ -91,10 +93,11 @@ class JpaSlotRepositoryTest {
         jpaSlotRepository.deleteAll();
 
         // when
-        var slots = jpaSlotRepository.findAllSlotsByParkingFloor(parkingFloor.getParkingFloorId());
+        var slots = jpaSlotRepository.findAllSlotsByParkingFloor(parkingFloor.getParkingFloorId(),
+                SLOT_INITIAL_PAGE, SLOT_INITIAL_SIZE, SLOT_SET_PAGE_INFO);
 
         // then
-        assertThat(StreamSupport.stream(slots.spliterator(), false).count()).isEqualTo(0);
+        assertThat(slots.getContents().size()).isEqualTo(0);
     }
 
     @Test

@@ -1,5 +1,6 @@
 package com.automated.parkinglot.controllers;
 
+import com.automated.parkinglot.dto.PagedContents;
 import com.automated.parkinglot.dto.SlotDTO;
 import com.automated.parkinglot.models.application.parking.ParkingFloor;
 import com.automated.parkinglot.models.application.parking.Slot;
@@ -26,10 +27,11 @@ public class SlotController {
     // TODO: batch get operation for all api's
 
     @GetMapping("all/{parkingFloorId}")
-    public List<SlotDTO> getAllSlots(@PathVariable int parkingFloorId) {
-        return slotService.getAllSlotsForFloor(parkingFloorId).stream()
-                .map(entity -> modelMapper.map(entity, SlotDTO.class))
-                .collect(Collectors.toList());
+    public PagedContents<Slot> getAllSlots(@PathVariable int parkingFloorId,
+                                           @RequestParam(value = "pageNum", required = false, defaultValue = "1") int pageNumber,
+                                           @RequestParam(value = "needPageInfo", required = false, defaultValue = "true")
+                                                       boolean setPageInfo) {
+        return slotService.getAllSlotsForFloor(parkingFloorId, pageNumber, setPageInfo);
     }
 
     @GetMapping("{id}")

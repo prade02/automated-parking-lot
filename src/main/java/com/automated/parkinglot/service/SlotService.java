@@ -1,29 +1,32 @@
 package com.automated.parkinglot.service;
 
+import com.automated.parkinglot.dto.PagedContents;
 import com.automated.parkinglot.exception.InvalidRequestException;
 import com.automated.parkinglot.models.application.enums.SlotStatus;
-import com.automated.parkinglot.models.application.parking.ParkingFloor;
 import com.automated.parkinglot.models.application.parking.Slot;
 import com.automated.parkinglot.repository.application.SlotRepository;
-import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.TreeMap;
 
 @Service
-@AllArgsConstructor
 public class SlotService implements ISlotService {
 
     private final SlotRepository slotRepository;
+    private final int pageSize;
+
+    public SlotService(SlotRepository slotRepository, @Value("${pagination.slot.size}") int pageSize) {
+        this.slotRepository = slotRepository;
+        this.pageSize = pageSize;
+    }
 
     @Override
-    public List<Slot> getAllSlotsForFloor(int parkingFloorId) {
-        var slots = new ArrayList<Slot>();
-        slotRepository
-                .findAllSlotsByParkingFloor(parkingFloorId)
-                .iterator()
-                .forEachRemaining(slots::add);
-        return slots;
+    public PagedContents<Slot> getAllSlotsForFloor(int parkingFloorId, int pageNumber, boolean setPageInfo) {
+        pageNumber = pageNumber == 0 ? 0 : pageNumber - 1;
+        return slotRepository.findAllSlotsByParkingFloor(parkingFloorId, pageNumber, pageSize, setPageInfo);
     }
 
     @Override
@@ -70,10 +73,11 @@ public class SlotService implements ISlotService {
         slotRepository.delete(optionalSlot.get());
     }
 
-    private boolean canAddNewSlots(ParkingFloor parkingFloor) {
-        return parkingFloor.getTotalSlots()
-                > getAllSlotsForFloor(parkingFloor.getParkingFloorId()).size();
-    }
+//    @Deprecated
+//    private boolean canAddNewSlots(ParkingFloor parkingFloor) {
+//        return parkingFloor.getTotalSlots()
+//                > getAllSlotsForFloor(parkingFloor.getParkingFloorId()).size();
+//    }
 
     @Override
     public Map<Integer, Map<String, Integer>> getCountOfVacantSlotsPerFloorPerType(int parkingLotId) {

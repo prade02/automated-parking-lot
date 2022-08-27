@@ -39,3 +39,7 @@ logging:
 slot:
   booking:
     strategy: lowestOnAllFromDb
+
+pagination:
+  slot:
+    size: 5
