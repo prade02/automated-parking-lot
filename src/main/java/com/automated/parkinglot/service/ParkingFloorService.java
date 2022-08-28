@@ -36,7 +36,7 @@ public class ParkingFloorService implements IParkingFloorService {
 
     @Override
     public ParkingFloor addNewParkingFloor(final ParkingFloor parkingFloor) {
-        if (!canAddNewFloor(parkingFloor.getParkingLot()))
+        if (!canAddNewFloor(parkingFloor.getParkingLot(), 1))
             throw new InvalidRequestException("No new floors can be added to the parking lot");
         parkingFloor.setName(
                 String.format("%s_%s", parkingFloor.getParkingLot().getName(), parkingFloor.getName()));
@@ -55,8 +55,17 @@ public class ParkingFloorService implements IParkingFloorService {
         parkingFloorRepository.deleteById(id);
     }
 
-    private boolean canAddNewFloor(ParkingLot parkingLot) {
+    @Override
+    public Iterable<ParkingFloor> addNewParkingFloors(ParkingLot parkingLot, Iterable<ParkingFloor> parkingFloors) {
+        if (!canAddNewFloor(parkingLot, (int)parkingFloors.spliterator().getExactSizeIfKnown()))
+            throw new InvalidRequestException("No new floors can be added to the parking lot");
+        parkingFloors.forEach(parkingFloor -> parkingFloor.setName(
+                String.format("%s_%s", parkingFloor.getParkingLot().getName(), parkingFloor.getName())));
+        return parkingFloorRepository.saveAll(parkingFloors);
+    }
+
+    private boolean canAddNewFloor(ParkingLot parkingLot, int newFloorsToBeAdded) {
         return parkingLot.getTotalFloors()
-                > getAllParkingFloorsByParkingLot(parkingLot.getParkingLotId()).size();
+                >= getAllParkingFloorsByParkingLot(parkingLot.getParkingLotId()).size() + newFloorsToBeAdded;
     }
 }

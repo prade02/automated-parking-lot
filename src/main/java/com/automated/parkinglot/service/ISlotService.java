@@ -26,4 +26,6 @@ public interface ISlotService {
     Iterable<Slot> getAllVacantSlotsPerFloorPerType(int parkingLotId);
 
     Iterable<Slot> getAllOccupiedSlotsPerFloorPerType(int parkingLotId);
+
+    Iterable<Slot> addNewSlots(Iterable<Slot> slots);
 }

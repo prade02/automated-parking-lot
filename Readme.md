@@ -10,6 +10,7 @@ Version 8.0
     6. Added: HBR SQL query logging, batch processing, JPA TXN MGMT logging, HBR basic binder, ordering inserts 
     7. Added pagination support for slot retrieval 
     8. Moved ID generation from IDENTITY to SEQUENCE
+    9. Added bulk insert for floors and slots
 
 Version 7.0
 

@@ -113,4 +113,10 @@ public class SlotService implements ISlotService {
     private Iterable<Slot> getAllSlotsPerFloorForType(int parkingLotId, SlotStatus slotStatus) {
         return slotRepository.getAllSlotsForStatus(slotStatus, parkingLotId);
     }
+
+    @Override
+    public Iterable<Slot> addNewSlots(Iterable<Slot> slots) {
+        slots.forEach(slot -> slot.setName(String.format("%s_%s", slot.getParkingFloor().getName(), slot.getName())));
+        return slotRepository.saveAll(slots);
+    }
 }
