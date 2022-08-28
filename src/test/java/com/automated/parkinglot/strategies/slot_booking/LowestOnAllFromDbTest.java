@@ -50,50 +50,48 @@ class LowestOnAllFromDbTest {
             ParkingFloor parkingFloorSecond,
             ParkingFloor parkingFloorThird) {
         // first floor
-        addSlots(1, GenericType.CAR, SlotStatus.OCCUPIED, "LOT1_1_1", parkingFloorFirst);
-        addSlots(2, GenericType.CAR, SlotStatus.OCCUPIED, "LOT1_1_2", parkingFloorFirst);
-        addSlots(3, GenericType.BIKE, SlotStatus.OCCUPIED, "LOT1_1_3", parkingFloorFirst);
-        addSlots(4, GenericType.BIKE, SlotStatus.VACANT, "LOT1_1_4", parkingFloorFirst);
+        addSlots(GenericType.CAR, SlotStatus.OCCUPIED, "LOT1_1_1", parkingFloorFirst);
+        addSlots(GenericType.CAR, SlotStatus.OCCUPIED, "LOT1_1_2", parkingFloorFirst);
+        addSlots(GenericType.BIKE, SlotStatus.OCCUPIED, "LOT1_1_3", parkingFloorFirst);
+        addSlots(GenericType.BIKE, SlotStatus.VACANT, "LOT1_1_4", parkingFloorFirst);
 
         // second floor
-        addSlots(5, GenericType.CAR, SlotStatus.VACANT, "LOT1_5_1", parkingFloorSecond);
-        addSlots(6, GenericType.CAR, SlotStatus.VACANT, "LOT1_6_2", parkingFloorSecond);
-        addSlots(7, GenericType.BIKE, SlotStatus.VACANT, "LOT1_7_3", parkingFloorSecond);
-        addSlots(8, GenericType.BIKE, SlotStatus.OCCUPIED, "LOT1_8_4", parkingFloorSecond);
+        addSlots(GenericType.CAR, SlotStatus.VACANT, "LOT1_5_1", parkingFloorSecond);
+        addSlots(GenericType.CAR, SlotStatus.VACANT, "LOT1_6_2", parkingFloorSecond);
+        addSlots(GenericType.BIKE, SlotStatus.VACANT, "LOT1_7_3", parkingFloorSecond);
+        addSlots(GenericType.BIKE, SlotStatus.OCCUPIED, "LOT1_8_4", parkingFloorSecond);
 
         // third floor
-        addSlots(9, GenericType.CAR, SlotStatus.VACANT, "LOT1_9_1", parkingFloorThird);
-        addSlots(10, GenericType.CAR, SlotStatus.VACANT, "LOT1_10_2", parkingFloorThird);
-        addSlots(11, GenericType.BIKE, SlotStatus.VACANT, "LOT1_11_3", parkingFloorThird);
-        addSlots(12, GenericType.BIKE, SlotStatus.OCCUPIED, "LOT1_12_4", parkingFloorThird);
-        addSlots(13, GenericType.TRUCK, SlotStatus.OCCUPIED, "LOT1_13_4", parkingFloorThird);
-        addSlots(14, GenericType.TRUCK, SlotStatus.VACANT, "LOT1_14_4", parkingFloorThird);
+        addSlots(GenericType.CAR, SlotStatus.VACANT, "LOT1_9_1", parkingFloorThird);
+        addSlots(GenericType.CAR, SlotStatus.VACANT, "LOT1_10_2", parkingFloorThird);
+        addSlots(GenericType.BIKE, SlotStatus.VACANT, "LOT1_11_3", parkingFloorThird);
+        addSlots(GenericType.BIKE, SlotStatus.OCCUPIED, "LOT1_12_4", parkingFloorThird);
+        addSlots(GenericType.TRUCK, SlotStatus.OCCUPIED, "LOT1_13_4", parkingFloorThird);
+        addSlots(GenericType.TRUCK, SlotStatus.VACANT, "LOT1_14_4", parkingFloorThird);
     }
 
     private void addSlotsForNoAvailableSlotTest(
             ParkingFloor parkingFloorFirst, ParkingFloor parkingFloorSecond) {
         // first floor
-        addSlots(1, GenericType.CAR, SlotStatus.OCCUPIED, "LOT1_1_1", parkingFloorFirst);
-        addSlots(2, GenericType.TRUCK, SlotStatus.OCCUPIED, "LOT1_1_2", parkingFloorFirst);
-        addSlots(3, GenericType.BIKE, SlotStatus.OCCUPIED, "LOT1_1_3", parkingFloorFirst);
-        addSlots(4, GenericType.BIKE, SlotStatus.OCCUPIED, "LOT1_1_4", parkingFloorFirst);
+        addSlots(GenericType.CAR, SlotStatus.OCCUPIED, "LOT1_1_1", parkingFloorFirst);
+        addSlots(GenericType.TRUCK, SlotStatus.OCCUPIED, "LOT1_1_2", parkingFloorFirst);
+        addSlots(GenericType.BIKE, SlotStatus.OCCUPIED, "LOT1_1_3", parkingFloorFirst);
+        addSlots(GenericType.BIKE, SlotStatus.OCCUPIED, "LOT1_1_4", parkingFloorFirst);
 
         // second floor
-        addSlots(5, GenericType.CAR, SlotStatus.OCCUPIED, "LOT1_5_1", parkingFloorSecond);
-        addSlots(6, GenericType.CAR, SlotStatus.OCCUPIED, "LOT1_6_2", parkingFloorSecond);
-        addSlots(7, GenericType.TRUCK, SlotStatus.OCCUPIED, "LOT1_7_3", parkingFloorSecond);
-        addSlots(8, GenericType.BIKE, SlotStatus.OCCUPIED, "LOT1_8_4", parkingFloorSecond);
+        addSlots(GenericType.CAR, SlotStatus.OCCUPIED, "LOT1_5_1", parkingFloorSecond);
+        addSlots(GenericType.CAR, SlotStatus.OCCUPIED, "LOT1_6_2", parkingFloorSecond);
+        addSlots(GenericType.TRUCK, SlotStatus.OCCUPIED, "LOT1_7_3", parkingFloorSecond);
+        addSlots(GenericType.BIKE, SlotStatus.OCCUPIED, "LOT1_8_4", parkingFloorSecond);
     }
 
     private void addSlots(
-            int slotId,
             GenericType slotType,
             SlotStatus slotStatus,
             String name,
             ParkingFloor parkingFloor) {
         jpaSlotRepository.save(
                 Slot.builder()
-                        .slotId(slotId)
                         .slotType(slotType)
                         .slotStatus(slotStatus)
                         .name(name)

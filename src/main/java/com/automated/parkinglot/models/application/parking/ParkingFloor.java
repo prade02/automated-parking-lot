@@ -14,7 +14,7 @@ public class ParkingFloor {
 
     @Id
     @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private int parkingFloorId;
 
     @Setter

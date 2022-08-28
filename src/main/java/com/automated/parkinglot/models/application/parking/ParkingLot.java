@@ -13,7 +13,7 @@ public class ParkingLot {
 
     @Id
     @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private int parkingLotId;
 
     private String name;

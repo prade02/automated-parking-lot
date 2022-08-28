@@ -9,6 +9,7 @@ Version 8.0
     5. Updated Transactional for SlotBookingService
     6. Added: HBR SQL query logging, batch processing, JPA TXN MGMT logging, HBR basic binder, ordering inserts 
     7. Added pagination support for slot retrieval 
+    8. Moved ID generation from IDENTITY to SEQUENCE
 
 Version 7.0
 
