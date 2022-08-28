@@ -11,6 +11,7 @@ Version 8.0
     7. Added pagination support for slot retrieval 
     8. Moved ID generation from IDENTITY to SEQUENCE
     9. Added bulk insert for floors and slots
+    10. Bulk delete of slots 
 
 Version 7.0
 

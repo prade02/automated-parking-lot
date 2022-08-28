@@ -119,4 +119,9 @@ public class SlotService implements ISlotService {
         slots.forEach(slot -> slot.setName(String.format("%s_%s", slot.getParkingFloor().getName(), slot.getName())));
         return slotRepository.saveAll(slots);
     }
+
+    @Override
+    public void deleteSlotsById(Iterable<Integer> ids) {
+        slotRepository.deleteAllByIdInBatch(ids);
+    }
 }

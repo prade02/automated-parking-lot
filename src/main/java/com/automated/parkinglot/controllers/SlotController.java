@@ -99,4 +99,9 @@ public class SlotController {
                 .map(entity -> modelMapper.map(entity, SlotDTO.class))
                 .collect(Collectors.toList());
     }
+
+    @DeleteMapping
+    public void deleteMultipleSlots(@RequestBody Iterable<Integer> ids) {
+        slotService.deleteSlotsById(ids);
+    }
 }

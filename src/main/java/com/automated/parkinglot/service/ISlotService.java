@@ -28,4 +28,6 @@ public interface ISlotService {
     Iterable<Slot> getAllOccupiedSlotsPerFloorPerType(int parkingLotId);
 
     Iterable<Slot> addNewSlots(Iterable<Slot> slots);
+
+    void deleteSlotsById(Iterable<Integer> ids);
 }
