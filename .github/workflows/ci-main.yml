@@ -7,11 +7,6 @@ on:
   pull_request:
     branches: [ "master" ]
 
-env:
-  AWS_REGION: ap-south-1
-  ECR_REPOSITORY: main-ecs-parkinglot-dev
-  IMAGE_TAG: latest
-
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "build"
@@ -38,6 +33,8 @@ jobs:
       # Configure AWS credentials
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
+        env:
+          AWS_REGION: ap-south-1
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -53,6 +50,8 @@ jobs:
       # Build and Push docker image to ECR repository
       - name: Build and Push docker image to repository
         env:
+          ECR_REPOSITORY: main-ecs-parkinglot-dev
+          IMAGE_TAG: latest
           ECR_REGISTRY: ${{ steps.login-to-aws-ecr-registry.outputs.registry }}
         run: |
           docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
