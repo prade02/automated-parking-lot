@@ -36,13 +36,12 @@ jobs:
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-south-1
 
       # Login to public AWS ECR registry
       - name: Login to AWS ECR public registry
         id: login-to-aws-ecr-registry
         uses: aws-actions/amazon-ecr-login@v1
-        with:
-          registry-type: public
 
       # Build and Push docker image to ECR repository
       - name: Build and Push docker image to repository
