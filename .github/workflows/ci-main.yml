@@ -49,8 +49,9 @@ jobs:
       - name: Build and Push docker image to repository
         env:
           ECR_REPOSITORY: main-ecs-parkinglot-dev
+          ECR_REPOSITORY_ALIAS: c3o1p7l3
           IMAGE_TAG: latest
           ECR_REGISTRY: ${{ steps.login-to-aws-ecr-registry.outputs.registry }}
         run: |
-          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
-          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY_ALIAS/$ECR_REPOSITORY:$IMAGE_TAG .
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY_ALIAS/$ECR_REPOSITORY:$IMAGE_TAG
