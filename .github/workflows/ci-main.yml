@@ -8,9 +8,9 @@ on:
     branches: [ "master" ]
 
 env:
-  AWS-REGION: ap-south-1
-  ECR-REPOSITORY: main-ecs-parkinglot-dev
-  IMAGE-TAG: latest
+  AWS_REGION: ap-south-1
+  ECR_REPOSITORY: main-ecs-parkinglot-dev
+  IMAGE_TAG: latest
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -41,7 +41,7 @@ jobs:
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ AWS-REGION }}
+          aws-region: $AWS_REGION
 
       # Login to public AWS ECR registry
       - name: Login to AWS ECR public registry
@@ -53,7 +53,7 @@ jobs:
       # Build and Push docker image to ECR repository
       - name: Build and Push docker image to repository
         env:
-          ECR-REGISTRY: ${{ steps.login-to-aws-ecr-registry.outputs.registry }}
+          ECR_REGISTRY: ${{ steps.login-to-aws-ecr-registry.outputs.registry }}
         run: |
-          docker build -t $ECR-REGISTRY/$ECR-REPOSITORY:$IMAGE-TAG .
-          docker push $ECR-REGISTRY/$ECR-REPOSITORY:$IMAGE-TAG
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
