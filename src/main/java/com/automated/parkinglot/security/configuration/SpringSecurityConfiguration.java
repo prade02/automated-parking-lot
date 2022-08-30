@@ -20,32 +20,32 @@ import java.util.List;
 @AllArgsConstructor
 public class SpringSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-  private final JwtInterceptor jwtInterceptor;
+    private final JwtInterceptor jwtInterceptor;
 
-  @Override
-  protected void configure(HttpSecurity http) throws Exception {
-    http
-            .authorizeRequests()
-            .accessDecisionManager(accessDecisionManager())
-            .antMatchers("/api/v1/booked-slot/amount/**").permitAll()
-            .antMatchers("/api/v1/slot-booking/book/**").hasAuthority("BOT")
-            .antMatchers("/api/v1/booked-slot/release/**").hasAuthority("BOT")
-            .antMatchers("/api/v1/**").hasAuthority("ADMIN")
-            .anyRequest().authenticated()
-            .and()
-            .addFilterBefore(jwtInterceptor, FilterSecurityInterceptor.class)
-            .csrf().disable();
-  }
-
-  private AccessDecisionManager accessDecisionManager() {
-    return new UnanimousBased(List.of(new WebExpressionVoter()));
-  }
-
-  @Configuration
-  static class RoleHierarchyConfiguration {
-    @Bean
-    public RoleHierarchyImpl roleHierarchy() {
-      return new RoleHierarchyImpl();
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http
+                .authorizeRequests()
+                .accessDecisionManager(accessDecisionManager())
+                .antMatchers("/api/v1/booked-slot/amount/**").permitAll()
+                .antMatchers("/api/v1/slot-booking/book/**").hasAuthority("BOT")
+                .antMatchers("/api/v1/booked-slot/release/**").hasAuthority("BOT")
+                .antMatchers("/api/v1/**").hasAuthority("ADMIN")
+                .anyRequest().authenticated()
+                .and()
+                .addFilterBefore(jwtInterceptor, FilterSecurityInterceptor.class)
+                .csrf().disable();
     }
-  }
+
+    private AccessDecisionManager accessDecisionManager() {
+        return new UnanimousBased(List.of(new WebExpressionVoter()));
+    }
+
+    @Configuration
+    static class RoleHierarchyConfiguration {
+        @Bean
+        public RoleHierarchyImpl roleHierarchy() {
+            return new RoleHierarchyImpl();
+        }
+    }
 }

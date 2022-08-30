@@ -1,3 +1,19 @@
+Version 8.0
+
+    1. Added JWT filter(interceptor) which parses the JWT token present in the header
+    2. Added custom AccessDecisionManager with only WebExpressionVoter as the Voter.
+    3. Added multi datasource configuration
+        a. parking lot DB
+        b. auth service DB
+    4. Added Transactional for BookedSlotService
+    5. Updated Transactional for SlotBookingService
+    6. Added: HBR SQL query logging, batch processing, JPA TXN MGMT logging, HBR basic binder, ordering inserts 
+    7. Added pagination support for slot retrieval 
+    8. Moved ID generation from IDENTITY to SEQUENCE
+    9. Added bulk insert for floors and slots
+    10. Bulk delete of slots 
+    11. Added CI pipline
+
 Version 7.0
 
     1. Banner added

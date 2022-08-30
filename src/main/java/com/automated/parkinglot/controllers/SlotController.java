@@ -1,5 +1,6 @@
 package com.automated.parkinglot.controllers;
 
+import com.automated.parkinglot.dto.PagedContents;
 import com.automated.parkinglot.dto.SlotDTO;
 import com.automated.parkinglot.models.application.parking.ParkingFloor;
 import com.automated.parkinglot.models.application.parking.Slot;
@@ -19,66 +20,88 @@ import java.util.stream.StreamSupport;
 @RequestMapping("api/v1/slot")
 public class SlotController {
 
-  private final ISlotService slotService;
-  private final IParkingFloorService parkingFloorService;
-  private final ModelMapper modelMapper;
+    private final ISlotService slotService;
+    private final IParkingFloorService parkingFloorService;
+    private final ModelMapper modelMapper;
 
-  @GetMapping("all/{parkingFloorId}")
-  public List<SlotDTO> getAllSlots(@PathVariable int parkingFloorId) {
-    return slotService.getAllSlotsForFloor(parkingFloorId).stream()
-        .map(entity -> modelMapper.map(entity, SlotDTO.class))
-        .collect(Collectors.toList());
-  }
+    // TODO: batch get operation for all api's
 
-  @GetMapping("{id}")
-  public SlotDTO getParkingSlot(@PathVariable int id) {
-    return modelMapper.map(slotService.getSlotById(id), SlotDTO.class);
-  }
+    @GetMapping("all/{parkingFloorId}")
+    public PagedContents<Slot> getAllSlots(@PathVariable int parkingFloorId,
+                                           @RequestParam(value = "pageNum", required = false, defaultValue = "1") int pageNumber,
+                                           @RequestParam(value = "needPageInfo", required = false, defaultValue = "true")
+                                                   boolean setPageInfo) {
+        return slotService.getAllSlotsForFloor(parkingFloorId, pageNumber, setPageInfo);
+    }
 
-  @PostMapping("{parkingFloorId}")
-  public SlotDTO saveNewSlot(@PathVariable int parkingFloorId, @RequestBody SlotDTO slotDTO) {
-    ParkingFloor parkingFloor = parkingFloorService.getParkingFloor(parkingFloorId);
-    Slot newSlot =
-        slotService.addNewSlot(
-            Slot.builder()
-                .parkingFloor(parkingFloor)
-                .name(slotDTO.getName())
-                .slotStatus(slotDTO.getSlotStatus())
-                .slotType(slotDTO.getSlotType())
-                .build());
-    return modelMapper.map(newSlot, SlotDTO.class);
-  }
+    @GetMapping("{id}")
+    public SlotDTO getParkingSlot(@PathVariable int id) {
+        return modelMapper.map(slotService.getSlotById(id), SlotDTO.class);
+    }
 
-  @PutMapping("{id}")
-  public SlotDTO updateSlot(@RequestBody SlotDTO slotDTO) {
-    return modelMapper.map(
-        slotService.updateSlot(modelMapper.map(slotDTO, Slot.class)), SlotDTO.class);
-  }
+    @PostMapping("{parkingFloorId}")
+    public SlotDTO saveNewSlot(@PathVariable int parkingFloorId, @RequestBody SlotDTO slotDTO) {
+        ParkingFloor parkingFloor = parkingFloorService.getParkingFloor(parkingFloorId);
+        Slot newSlot =
+                slotService.addNewSlot(
+                        Slot.builder()
+                                .parkingFloor(parkingFloor)
+                                .name(slotDTO.getName())
+                                .slotStatus(slotDTO.getSlotStatus())
+                                .slotType(slotDTO.getSlotType())
+                                .build());
+        return modelMapper.map(newSlot, SlotDTO.class);
+    }
 
-  @DeleteMapping("{id}")
-  public void deleteSlot(@PathVariable int id) {
-    slotService.deleteSlotById(id);
-  }
+    @PutMapping("{id}")
+    public SlotDTO updateSlot(@RequestBody SlotDTO slotDTO) {
+        return modelMapper.map(
+                slotService.updateSlot(modelMapper.map(slotDTO, Slot.class)), SlotDTO.class);
+    }
 
-  @GetMapping("vacant/count/{parkingLotId}")
-  public Map<Integer, Map<String, Integer>> getCountOfVacantSlotsPerFloorForType(
-      @PathVariable int parkingLotId) {
-    return slotService.getCountOfVacantSlotsPerFloorPerType(parkingLotId);
-  }
+    @DeleteMapping("{id}")
+    public void deleteSlot(@PathVariable int id) {
+        slotService.deleteSlotById(id);
+    }
 
-  @GetMapping("vacant/all/{parkingLotId}")
-  public List<SlotDTO> getAllVacantSlotsPerFloorForType(@PathVariable int parkingLotId) {
-    return StreamSupport.stream(
-            slotService.getAllVacantSlotsPerFloorPerType(parkingLotId).spliterator(), false)
-        .map(entity -> modelMapper.map(entity, SlotDTO.class))
-        .collect(Collectors.toList());
-  }
+    @GetMapping("vacant/count/{parkingLotId}")
+    public Map<Integer, Map<String, Integer>> getCountOfVacantSlotsPerFloorForType(
+            @PathVariable int parkingLotId) {
+        return slotService.getCountOfVacantSlotsPerFloorPerType(parkingLotId);
+    }
 
-  @GetMapping("occupied/all/{parkingLotId}")
-  public List<SlotDTO> getAllOccupiedSlotsPerFloorForType(@PathVariable int parkingLotId) {
-    return StreamSupport.stream(
-            slotService.getAllOccupiedSlotsPerFloorPerType(parkingLotId).spliterator(), false)
-        .map(entity -> modelMapper.map(entity, SlotDTO.class))
-        .collect(Collectors.toList());
-  }
+    @GetMapping("vacant/all/{parkingLotId}")
+    public Iterable<SlotDTO> getAllVacantSlotsPerFloorForType(@PathVariable int parkingLotId) {
+        return mapToListOfDTO(slotService.getAllVacantSlotsPerFloorPerType(parkingLotId));
+    }
+
+    @GetMapping("occupied/all/{parkingLotId}")
+    public Iterable<SlotDTO> getAllOccupiedSlotsPerFloorForType(@PathVariable int parkingLotId) {
+        return mapToListOfDTO(slotService.getAllOccupiedSlotsPerFloorPerType(parkingLotId));
+    }
+
+    @PostMapping("{parkingFloorId}/bulk")
+    public Iterable<SlotDTO> addNewSlots(@PathVariable int parkingFloorId, @RequestBody List<SlotDTO> slotsDTO) {
+        ParkingFloor parkingFloor = parkingFloorService.getParkingFloor(parkingFloorId);
+        List<Slot> slots = slotsDTO.stream()
+                .map(slotDTO -> Slot.builder()
+                        .name(slotDTO.getName())
+                        .slotStatus(slotDTO.getSlotStatus())
+                        .slotType(slotDTO.getSlotType())
+                        .parkingFloor(parkingFloor)
+                        .build())
+                .collect(Collectors.toList());
+        return mapToListOfDTO(slotService.addNewSlots(slots));
+    }
+
+    private Iterable<SlotDTO> mapToListOfDTO(Iterable<Slot> slots) {
+        return StreamSupport.stream(slots.spliterator(), false)
+                .map(entity -> modelMapper.map(entity, SlotDTO.class))
+                .collect(Collectors.toList());
+    }
+
+    @DeleteMapping
+    public void deleteMultipleSlots(@RequestBody Iterable<Integer> ids) {
+        slotService.deleteSlotsById(ids);
+    }
 }

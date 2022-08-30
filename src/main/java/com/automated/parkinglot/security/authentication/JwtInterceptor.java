@@ -31,56 +31,55 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class JwtInterceptor extends OncePerRequestFilter {
 
-  private final AuthService authService;
-  private final RoleHierarchyImpl roleHierarchy;
-  private final JwtSecretKeyGenerator jwtSecretKeyGenerator;
+    private static final String ROLE_HIERARCHY_EXPRESSION_DELIMITER = "$$$";
+    private final AuthService authService;
+    private final RoleHierarchyImpl roleHierarchy;
+    private final JwtSecretKeyGenerator jwtSecretKeyGenerator;
 
-  private static final String ROLE_HIERARCHY_EXPRESSION_DELIMITER = "$$$";
-
-  @Override
-  protected void doFilterInternal(
-      HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
-      throws ServletException, IOException {
-    try {
-      String encodedToken = request.getHeader(HttpHeaders.AUTHORIZATION).replace("Bearer ", "");
-      SecurityContextHolder.getContext().setAuthentication(parseToken(encodedToken));
-    } catch (Exception exception) {
-      // log error
+    @Override
+    protected void doFilterInternal(
+            HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+            throws ServletException, IOException {
+        try {
+            String encodedToken = request.getHeader(HttpHeaders.AUTHORIZATION).replace("Bearer ", "");
+            SecurityContextHolder.getContext().setAuthentication(parseToken(encodedToken));
+        } catch (Exception exception) {
+            // log error
+        }
+        filterChain.doFilter(request, response);
     }
-    filterChain.doFilter(request, response);
-  }
 
-  private Authentication parseToken(String encodedToken) {
-    if (!StringUtils.hasText(encodedToken))
-      throw new AccessDeniedException("Invalid or No JWT token based");
-    Jws<Claims> jwsClaims =
-        Jwts.parserBuilder()
-            .setSigningKey(jwtSecretKeyGenerator.getSecretKey())
-            .build()
-            .parseClaimsJws(encodedToken);
-    Claims payload = jwsClaims.getBody();
-    var authorities = (List<String>) payload.get("authorities");
-    Collection<GrantedAuthority> grantedAuthorities =
-        authorities.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toSet());
-    String username = payload.getSubject();
+    private Authentication parseToken(String encodedToken) {
+        if (!StringUtils.hasText(encodedToken))
+            throw new AccessDeniedException("Invalid or No JWT token based");
+        Jws<Claims> jwsClaims =
+                Jwts.parserBuilder()
+                        .setSigningKey(jwtSecretKeyGenerator.getSecretKey())
+                        .build()
+                        .parseClaimsJws(encodedToken);
+        Claims payload = jwsClaims.getBody();
+        var authorities = (List<String>) payload.get("authorities");
+        Collection<GrantedAuthority> grantedAuthorities =
+                authorities.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toSet());
+        String username = payload.getSubject();
 
-    Collection<GrantedAuthority> reachableGrantedAuthorities =
-        getReachableRoles(grantedAuthorities);
+        Collection<GrantedAuthority> reachableGrantedAuthorities =
+                getReachableRoles(grantedAuthorities);
 
-    return new UsernamePasswordAuthenticationToken(username, null, reachableGrantedAuthorities);
-  }
+        return new UsernamePasswordAuthenticationToken(username, null, reachableGrantedAuthorities);
+    }
 
-  private Collection<GrantedAuthority> getReachableRoles(
-      Collection<GrantedAuthority> grantedAuthorities) {
-    roleHierarchy.setHierarchy(replaceDelimiter(fetchRoleHierarchyExpression()));
-    return roleHierarchy.getReachableGrantedAuthorities(grantedAuthorities);
-  }
+    private Collection<GrantedAuthority> getReachableRoles(
+            Collection<GrantedAuthority> grantedAuthorities) {
+        roleHierarchy.setHierarchy(replaceDelimiter(fetchRoleHierarchyExpression()));
+        return roleHierarchy.getReachableGrantedAuthorities(grantedAuthorities);
+    }
 
-  private String replaceDelimiter(String expression) {
-    return expression.replace(ROLE_HIERARCHY_EXPRESSION_DELIMITER, "\n");
-  }
+    private String replaceDelimiter(String expression) {
+        return expression.replace(ROLE_HIERARCHY_EXPRESSION_DELIMITER, "\n");
+    }
 
-  private String fetchRoleHierarchyExpression() {
-    return authService.getRoleHierarchy().getRoleHierarchyExpression();
-  }
+    private String fetchRoleHierarchyExpression() {
+        return authService.getRoleHierarchy().getRoleHierarchyExpression();
+    }
 }

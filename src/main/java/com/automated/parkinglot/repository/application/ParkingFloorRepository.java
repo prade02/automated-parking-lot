@@ -6,5 +6,5 @@ import org.springframework.data.repository.NoRepositoryBean;
 
 @NoRepositoryBean
 public interface ParkingFloorRepository extends JpaRepository<ParkingFloor, Integer> {
-  Iterable<ParkingFloor> getAllParkingFloorsByParkingLot(int parkingLotId);
+    Iterable<ParkingFloor> getAllParkingFloorsByParkingLot(int parkingLotId);
 }

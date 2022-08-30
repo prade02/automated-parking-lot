@@ -12,35 +12,35 @@ import java.util.List;
 @AllArgsConstructor
 public class ParkingLotService implements IParkingLotService {
 
-  private final ParkingLotRepository parkingLotRepository;
+    private final ParkingLotRepository parkingLotRepository;
 
-  @Override
-  public List<ParkingLot> getAllParkingLots() {
-    return parkingLotRepository.findAll();
-  }
+    @Override
+    public List<ParkingLot> getAllParkingLots() {
+        return parkingLotRepository.findAll();
+    }
 
-  @Override
-  public ParkingLot getParkingLot(final int id) {
-    final var optionalParkingLot = parkingLotRepository.findById(id);
-    if (optionalParkingLot.isEmpty()) throw new InvalidRequestException("Given Id not found");
-    return optionalParkingLot.get();
-  }
+    @Override
+    public ParkingLot getParkingLot(final int id) {
+        final var optionalParkingLot = parkingLotRepository.findById(id);
+        if (optionalParkingLot.isEmpty()) throw new InvalidRequestException("Given Id not found");
+        return optionalParkingLot.get();
+    }
 
-  @Override
-  public ParkingLot addNewParkingLot(final ParkingLot parkingLot) {
-    return parkingLotRepository.save(parkingLot);
-  }
+    @Override
+    public ParkingLot addNewParkingLot(final ParkingLot parkingLot) {
+        return parkingLotRepository.save(parkingLot);
+    }
 
-  @Override
-  public ParkingLot updateParkingLot(final ParkingLot parkingLot) {
-    if (parkingLotRepository.findById(parkingLot.getParkingLotId()).isEmpty())
-      throw new InvalidRequestException("Id not found");
+    @Override
+    public ParkingLot updateParkingLot(final ParkingLot parkingLot) {
+        if (parkingLotRepository.findById(parkingLot.getParkingLotId()).isEmpty())
+            throw new InvalidRequestException("Id not found");
 
-    return parkingLotRepository.save(parkingLot);
-  }
+        return parkingLotRepository.save(parkingLot);
+    }
 
-  @Override
-  public void deleteParkingLot(final int id) {
-    parkingLotRepository.delete(getParkingLot(id));
-  }
+    @Override
+    public void deleteParkingLot(final int id) {
+        parkingLotRepository.delete(getParkingLot(id));
+    }
 }

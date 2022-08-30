@@ -9,15 +9,15 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-  @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-  @ExceptionHandler(Exception.class)
-  public ErrorResponse handleInternalError(Exception exception) {
-    return new ErrorResponse(String.format("Internal error: %s", exception.getMessage()));
-  }
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ExceptionHandler(Exception.class)
+    public ErrorResponse handleInternalError(Exception exception) {
+        return new ErrorResponse(String.format("Internal error: %s", exception.getMessage()));
+    }
 
-  @ResponseStatus(HttpStatus.BAD_REQUEST)
-  @ExceptionHandler(value = {InvalidRequestException.class, NoSlotAvailableException.class})
-  public ErrorResponse handleInvalidRequest(Exception exception) {
-    return new ErrorResponse(String.format("Error: %s", exception.getMessage()));
-  }
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(value = {InvalidRequestException.class, NoSlotAvailableException.class})
+    public ErrorResponse handleInvalidRequest(Exception exception) {
+        return new ErrorResponse(String.format("Error: %s", exception.getMessage()));
+    }
 }

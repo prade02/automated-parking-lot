@@ -19,37 +19,37 @@ import javax.sql.DataSource;
 @Configuration
 @EnableTransactionManagement
 @EnableJpaRepositories(
-    entityManagerFactoryRef = "applicationEntityManagerFactory",
-    transactionManagerRef = "applicationTransactionManager",
-    basePackages = "com.automated.parkinglot.repository.application")
+        entityManagerFactoryRef = "applicationEntityManagerFactory",
+        transactionManagerRef = "applicationTransactionManager",
+        basePackages = "com.automated.parkinglot.repository.application")
 public class ApplicationDataSourceConfiguration {
 
-  @Bean(name = "applicationDataSourceProperties")
-  @ConfigurationProperties(prefix = "spring.datasource.application")
-  public DataSourceProperties dataSourceProperties() {
-    return new DataSourceProperties();
-  }
+    @Bean(name = "applicationDataSourceProperties")
+    @ConfigurationProperties(prefix = "spring.datasource.application")
+    public DataSourceProperties dataSourceProperties() {
+        return new DataSourceProperties();
+    }
 
-  @Primary
-  @Bean(name = "applicationDataSource")
-  public DataSource dataSource() {
-    return dataSourceProperties().initializeDataSourceBuilder().build();
-  }
+    @Primary
+    @Bean(name = "applicationDataSource")
+    public DataSource dataSource() {
+        return dataSourceProperties().initializeDataSourceBuilder().build();
+    }
 
-  @Primary
-  @Bean(name = "applicationEntityManagerFactory")
-  public LocalContainerEntityManagerFactoryBean entityManagerFactory(
-      EntityManagerFactoryBuilder entityManagerFactoryBuilder) {
-    return entityManagerFactoryBuilder
-        .dataSource(dataSource())
-        .packages("com.automated.parkinglot.models.application")
-        .build();
-  }
+    @Primary
+    @Bean(name = "applicationEntityManagerFactory")
+    public LocalContainerEntityManagerFactoryBean entityManagerFactory(
+            EntityManagerFactoryBuilder entityManagerFactoryBuilder) {
+        return entityManagerFactoryBuilder
+                .dataSource(dataSource())
+                .packages("com.automated.parkinglot.models.application")
+                .build();
+    }
 
-  @Primary
-  @Bean(name = "applicationTransactionManager")
-  public TransactionManager transactionManager(
-          @Qualifier("applicationEntityManagerFactory")EntityManagerFactory entityManagerFactory) {
-    return new JpaTransactionManager(entityManagerFactory);
-  }
+    @Primary
+    @Bean(name = "applicationTransactionManager")
+    public TransactionManager transactionManager(
+            @Qualifier("applicationEntityManagerFactory") EntityManagerFactory entityManagerFactory) {
+        return new JpaTransactionManager(entityManagerFactory);
+    }
 }
