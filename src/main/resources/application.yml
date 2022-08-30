@@ -1,13 +1,15 @@
 spring:
   datasource:
     application:
-      url: jdbc:postgresql://localhost:5432/automated_parking_lot
-      username: postgres
-      driverClassName: org.postgresql.Driver
+      url: ${PARKING_LOT_APP_DB_JDBC_URL}
+      username: ${PARKING_LOT_APP_DB_USERNAME}
+      password: ${PARKING_LOT_APP_DB_PASSWORD}
+      driverClassName: ${PARKING_LOT_APP_DB_DRIVER}
     auth:
-      url: jdbc:postgresql://localhost:5432/auth_service
-      username: postgres
-      driverClassName: org.postgresql.Driver
+      url: ${PARKING_LOT_AUTH_DB_JDBC_URL}
+      username: ${PARKING_LOT_AUTH_DB_USERNAME}
+      password: ${PARKING_LOT_AUTH_DB_PASSWORD}
+      driverClassName: ${PARKING_LOT_AUTH_DB_DRIVER}
   jackson:
     property-naming-strategy: SNAKE_CASE
   jpa:
@@ -43,3 +45,6 @@ slot:
 pagination:
   slot:
     size: 5
+
+jwt:
+  secret: ${PARKING_LOT_JWT_SECRET}

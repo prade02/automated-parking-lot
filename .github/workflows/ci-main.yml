@@ -28,7 +28,7 @@ jobs:
 
       # Run Maven build
       - name: Run Maven build
-        run: mvn -B package
+        run: mvn -B clean package spring-boot:repackage
 
       # Configure AWS credentials
       - name: Configure AWS credentials
