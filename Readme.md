@@ -12,6 +12,7 @@ Version 8.0
     8. Moved ID generation from IDENTITY to SEQUENCE
     9. Added bulk insert for floors and slots
     10. Bulk delete of slots 
+    11. Added CI pipline
 
 Version 7.0
 
