@@ -13,6 +13,7 @@ Version 8.0
     9. Added bulk insert for floors and slots
     10. Bulk delete of slots 
     11. Added CI pipline
+    12. Added Dockerfile
 
 Version 7.0
 
