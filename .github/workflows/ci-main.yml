@@ -1,0 +1,59 @@
+name: CI
+
+# Controls when the workflow will run
+on:
+  workflow_dispatch:
+    name: manual trigger
+  pull_request:
+    branches: [ "master" ]
+
+env:
+  AWS-REGION: ap-south-1
+  ECR-REPOSITORY: main-ecs-parkinglot-dev
+  IMAGE-TAG: latest
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v3
+
+      # Set up Java 17
+      - name: Setup Java 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: 17
+          distribution: adopt
+
+      # Run Maven build
+      - name: Run Maven build
+        run: mvn -B package
+
+      # Configure AWS credentials
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ AWS-REGION }}
+
+      # Login to public AWS ECR registry
+      - name: Login to AWS ECR public registry
+        id: login-to-aws-ecr-registry
+        uses: aws-actions/amazon-ecr-login@v1
+        with:
+          registry-type: public
+
+      # Build and Push docker image to ECR repository
+      - name: Build and Push docker image to repository
+        env:
+          ECR-REGISTRY: ${{ steps.login-to-aws-ecr-registry.outputs.registry }}
+        run: |
+          docker build -t $ECR-REGISTRY/$ECR-REPOSITORY:$IMAGE-TAG .
+          docker push $ECR-REGISTRY/$ECR-REPOSITORY:$IMAGE-TAG
